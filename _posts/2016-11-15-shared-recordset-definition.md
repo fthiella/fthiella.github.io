@@ -43,9 +43,9 @@ method getrecordset($rs) {
 and then the default handler inside the json directory can be just like this:
 
 ````perl
-%flags
+<%flags>
 extends => '../Base.mp';
-/%flags
+</%flags>
 %class
   has '_id';
   has '_app';
@@ -55,14 +55,14 @@ extends => '../Base.mp';
   has 'iColumns';
 
   has 'sEcho';
-/%class
-%init
+</%class>
+<%init>
   my ($recordset_name, $ext) = $m->path_info =~ /(.*)(\.json)$/;
   if (! $.getrecordset($recordset_name)) {
     $m->not_found();
   }
-/%init
-&
+</%init>
+<&
   ../query-data-widget.mi,
     obj => {
       source => $.getrecordset($recordset_name)->{source},
@@ -80,13 +80,12 @@ extends => '../Base.mp';
     iColumns => $.iColumns,
     sEcho => $.sEcho,
     searchArgs => $.args
-&
+&>
 ````
 
 it will inherit only from the Base.mp (no html, only perl!) ... and yes, I know this is a little ugly and not too elegant, but at least I can use the query-data-widget (and the query-widget as well) without major updates. I will work on making it better :)
 
-*Ah only one thing has to be updated!* instead of working on the $.columns object I figured out that I have to work on a local copy of the object:
-
+*Ah only one thing has to be updated!* instead of working on the `$.columns` object I figured out that I have to work on a local copy of the object:
 
 ````perl
     use Clone 'clone';
@@ -97,7 +96,7 @@ otherwise, everytime I modify the columns object to add a temporary filter, the 
 To call the query widget I use this:
 
 ````perl
-&
+<&
   query-widget.mi,
     query => {
       id => 'osp-ps',
@@ -107,9 +106,7 @@ To call the query widget I use this:
       columns => $.getrecordset($recordset_name)->{columns},
       params => { 'table_link'  => undef, 'hide_title'  => 1, 'hide_top'    => 1, 'hide_bottom' => 0 }
     }
-&
+&>
 ````
 
 Well this environment is much more comfortable, I think I can add plenty of improvements soon, and I think I can write a good manual of how to use those components. See you soon!
-
-(Yes it looks that markdown support on wordpress is a little broken, so I had to remove some gt and lt characters, I'll fix it later)
