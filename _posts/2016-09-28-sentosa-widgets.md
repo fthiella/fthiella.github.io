@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Custom Sentosa System Database"
+title:  "Sentosa Widgets"
 date:   2016-09-22 12:00:00 +0200
-categories: perl markdown sql
+categories: mason perl learningmason
 ---
 Query and Forms are provided by the `query.mi` and the `form.mi` components.
 
