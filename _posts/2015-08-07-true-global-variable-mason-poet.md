@@ -8,7 +8,7 @@ A few days ago, while I was roaming around Singapore, I offered a bounty (twice)
 on an already existing question on StackOverflow [Global Variable mason2 in Poet](http://stackoverflow.com/questions/28281187/global-variable-mason2-in-poet)
  where the poster was asking how to use global variables in Mason. And I got a very nice and useful answer :)
 
-Here I am describing how to get a *true global and persistent variable*.
+Here I am describing how to get a **true global and persistent variable**.
 The content of a true global and persistent variable is preserved between requests.
 
 Has your web server 10 different threads that answer HTTP requests?
