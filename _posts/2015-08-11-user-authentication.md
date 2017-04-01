@@ -7,11 +7,12 @@ categories: mason perl learningmason
 
 Okay I know already that the code I'm going to post here is quite a big mess: it will work under
 some circumstances but it's buggy and insecure. I will update this post as soon as I figure out
-how to make this code better (expecially the `UserSession` part) :)
+how to make this code better (expecially the `UserSession` part).
 
 **Users tables**
 
-Users go in af_users table, the password is stored as clear text and even if that's bad practice it's easy to fix and it's not the issue here ;) there are bigger problems.
+Users go to the af_users table, where the password is stored as clear text. Even if that's bad
+practice it's easy to fix and it's not the issue here... there are bigger problems!
 
 ````sql
 CREATE TABLE `af_users` (
