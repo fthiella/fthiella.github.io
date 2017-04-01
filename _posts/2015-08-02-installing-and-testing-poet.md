@@ -16,11 +16,14 @@ While my production servers are always Linux, I just switched back from Mac to W
 desktop machine (pretty weird, isn't it?) and I'm happy to know that I can use Mason natively
 rather than starting up a virtual machine.
 
+
 Just install a recent version of ActivePerl, launch the `cpan` command and it will automatically
 download the `gcc` compiler and the `dmake` utilty (though you can use your own installation,
 if you know what you're doing). Then you can launch the `"install Poet"` command at the `cpan` prompt, and the installation process should proceed smoothly (or somehow smoothly. Hint: sometimes `"force install Poet"` helps).
 
+
 I'm also using Sublime Text editor, which has become my favourite editor, and with the Mason syntax it does a pretty good job.
+
 
 Don't forget to install `cpanminus` (with the provided ppm ... Perl Package Manager) it will be very handy at a later time. Now we can test our environment:
 
