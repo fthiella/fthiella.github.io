@@ -60,7 +60,7 @@ select c.name, p.name
 from
   customers c left join partners p
   on c.company_id = p.company_id
-```
+````
 
 with a right outer join query:
 
@@ -69,7 +69,7 @@ select c.name, p.name
 from
   customers c right join partners p
   on c.company_id = p.company_id
-```
+````
 
 (the right join is quite uncommon because it's more difficult to read,
 and is equivalent to a left join with the order of the tables switched).
@@ -112,7 +112,7 @@ from
   on c.company_id = p.company_id
 where
   c.company_id is null
-```
+````
 
 duplicates, if already present on the source tables, won't be removed.
 And the anti-join pattern on the second query assures that we are not introducing
