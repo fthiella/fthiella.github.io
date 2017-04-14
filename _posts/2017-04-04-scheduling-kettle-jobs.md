@@ -123,7 +123,7 @@ Every scheduled job (daily, 1h, 15min, etc.) is structured this way:
 
 this is how it looks like:
 
-![Daily Job]({{ site.baseurl }}/job_updates_daily.jpeg)
+![Daily Job]({{ site.baseurl }}/images/job_updates_daily.jpeg)
 
 make sure that connections are **black** (unconditional), so even if a job fails the following jobs
 will be executed anyway (if some jobs are related one to each other and you want a **conditional** connection, we will use a sub-job).
@@ -136,7 +136,7 @@ This task is for logging pourposes. We are going to run a query that returns the
 
 and save in the `data_caricamento` variable. Here's how it will look like:
 
-![Set Load Date]({{ site.baseurl }}/set-current-date.jpeg)
+![Set Load Date]({{ site.baseurl }}/images/set-current-date.jpeg)
 
 ## How a standard Job will look like
 
@@ -150,7 +150,7 @@ A standard job will performs the following tasks:
 
 and will look like this:
 
-![Standard Job]({{ site.baseurl }}/standard-job.jpeg)
+![Standard Job]({{ site.baseurl }}/images/standard-job.jpeg)
 
 for logging reasons, we will define two parameters on each of our jobs:
 
@@ -167,7 +167,7 @@ This task will insert a new row on the logs table with the following information
 - the current date time, which will be the start date/time
 - `esitocaricamento=1`, the task has been started
 
-![General Log Start]({{ site.baseurl }}/general_log_start.jpeg)
+![General Log Start]({{ site.baseurl }}/images/general_log_start.jpeg)
 
 Here's how the *generate rows* step will look like:
 
@@ -186,7 +186,7 @@ var esitocaricamento = 1
 
 and here's how the *Insert/Update* step will look like:
 
-![Insert/Update]({{ site.baseurl }}/general_log_start_insert_update.jpeg)
+![Insert/Update]({{ site.baseurl }}/images/general_log_start_insert_update.jpeg)
 
 ## General Log End
 
@@ -194,7 +194,7 @@ The general log end is very similar to the general log start. There's only one g
 but we will pass the parameter `esitocaricamento=0` whenever the execution is OK, and `esitocaricamento=2`
 whenever there's an error (right click -> Edit job entry)
 
-![Insert/Update]({{ site.baseurl }}/esito_caricamento_ok.jpeg)
+![Insert/Update]({{ site.baseurl }}/images/esito_caricamento_ok.jpeg)
 
 only the JavaScript code is different:
 
@@ -232,4 +232,4 @@ The interesting part here is to use an *Output Step Metrics* to get the number o
 and make it available to the outer job where the *General Log End* transformation will save those values in the logs table:
 
 
-![Insert/Update]({{ site.baseurl }}/actual_transformation.jpeg)
+![Insert/Update]({{ site.baseurl }}/images/actual_transformation.jpeg)
