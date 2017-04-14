@@ -21,7 +21,9 @@ Or to fetch *XML* or *Excel* files we get from web services, and integrate the c
 monthly *TXT* or *Excel* or *XML* extractions.
 
 All those tasks are managed by some *jobs* that calls multiple *transformations*, but I have to schedule those jobs somehow.
-But how? This is what I am using, and I find it pretty *elegant*.
+But how?
+
+This is what I am using, and I find it pretty *elegant*.
 
 ## Windows Scheduler
 
@@ -29,7 +31,7 @@ I wanted to use the standard Windows Scheduler, not the Pentaho scheduler. For L
 First of all I have created a `StartJob.cmd` batch file, that accepts only one parameter: the job to be executed.
 Here's how it looks like:
 
-````cmd
+````
 @echo off
 
 set kitchen="D:\Pentaho\kettle\data-integration\kitchen.bat"
@@ -49,7 +51,7 @@ We can start a job very simply with the following command:
 
     C:\>StartJob.CMD "job_updates_15min"
 
-which is more convenient than calling the `kitchen.bat` batch file directly (if you need more flexibility, just add a little more parameters).
+which is more convenient than calling the `kitchen.bat` batch file directly since most parameters are pre-configured already.
 
 I then scheduled a list of jobs to be executed at different intervals, e.g.
 
@@ -58,14 +60,15 @@ I then scheduled a list of jobs to be executed at different intervals, e.g.
 - job_updates_mondays
 - job_updates_1th_month
 
-this is kinda boring but it has to be configured only once. We won't touch the task scheduler anymore. Each of those jobs will contain
-a list of sub-jobs that will be executed (e.g. `job_update_json`, `job_send_email`, ...). Whenever we want to schedule a job hourly
-instead of daily, we'll have to remove the job from the daily job, and add it to the 1h job. No need to access the server where Kettle
-is installed anymore.
+this is kinda boring but it has to be configured only once, then we won't touch the task scheduler anymore.
+
+Each of those jobs will contain a list of sub-jobs that will be executed (e.g. `job_update_json`, `job_send_email`, ...).
+
+Whenever I prepare a new job and I want to schedule it daily, I will add it to the `job_updates_daily` outer job. Whenever I want to execute it hourly, I will just remove it from the `job_updates_daily` and add it to the `job_updates_1h` job.
 
 ## Log Table
 
-We want to have a log of which tasks have been executed, when, how long they took, how many rows were updated, etc.
+I wanted to log all tasks that have been executed, whith some additional info like when they have been executed, how long they took, how many rows were updated, etc.
 
 The table structure will be like created with this PostgreSQL query:
 
@@ -93,21 +96,21 @@ id | data_esecuzione | flagtipotabella | nometrasformazione | dtiniziocaricament
 2  | 2017-04-14      | Web Apps        | update_ps_json     | 2017-04-14 15:03:37 | 2017-04-14 15:05:54 | 2                |      |         |        
 3  | 2017-04-14      | Web Apps        | update_patients    | 2017-04-14 15:05:59 |                     | 1                |      |         |        
 
-here we can see that the task `DWH` / `dim_doctors_update` was executed successfully (esitocaricamento=0), the task `Web Apps` / `update_ps_json`
-ended up with an error (esitocaricamento=2), while the task `Web Apps` / `update_patients` didn't finish yet (maybe it's still running, maybe it hang...).
+here we can see that the task `DWH` / `dim_doctors_update` was executed successfully (`esitocaricamento=0`), the task `Web Apps` / `update_ps_json`
+ended up with an error (`esitocaricamento=2`), while the task `Web Apps` / `update_patients` didn't finish yet (maybe it's still running or maybe it hang...).
 
-Whenever we start a new job, we will generate a single row with esitocaricamento=1:
+Whenever we start a new job, I will generate a single row with esitocaricamento=1:
 
 data_esecuzione | flagtipotabella | nometrasformazione | esitocaricamento | dtiniziocaricamento
 ----------------|-----------------|--------------------|------------------|--------------------
 2017-04-14      | DWH             | dim_doctors_update | 1                | 2017-04-14 15:00:01
 
-and we will add it to the logs table with an *Insert/Update* step using the lookup keys (`data_esecuzione`, `flagtipotabella`, `nometrasformazione`).
+and I will add this row to the logs table with an *Insert/Update* step using the lookup keys (`data_esecuzione`, `flagtipotabella`, `nometrasformazione`).
 
 Then, whenever the task end succesfully, we will generate a row with the same lookup keys `('2017-04-14', 'DWH', 'dim_doctors_update')` but
-`esitocaricamento=0` and the current_timestamp as the end datetime, and eventually the number of rows read, written and updated. We are still using
-an *Insert/Update* task that will change the status from 1 to 0, will leave the starting datetime untouched, and will add the end datetime and the number
-of rows read, written and updated.
+`esitocaricamento=0` and the current_timestamp as the end datetime, and eventually the number of rows read, written and updated.
+
+Using an *Insert/Update* task the status will be updated from 1 to 0 (great!), the starting datetime will be left untouched, and will add the end datetime and the number of rows read, written and updated.
 
 Whenever the task end unsuccesfully, we are doing the same but we will update the status from 1 to 0.
 
@@ -231,5 +234,9 @@ ad output some rows with a Table output or an Insert/Update task.
 The interesting part here is to use an *Output Step Metrics* to get the number or rows *read*, *written*, *updated*
 and make it available to the outer job where the *General Log End* transformation will save those values in the logs table:
 
-
 ![Insert/Update]({{ site.baseurl }}/images/actual_transformation.jpeg)
+
+## Conclusion
+
+Setting up some scheduled task using this technique requires some more work the first time,
+but once the system is properly set up managing scheduled tasks becomes fun!
