@@ -5,7 +5,7 @@ date:   2017-04-14 20:35:00 +0200
 categories: pentaho kettle
 ---
 Pentaho Data Integration is an open source tool that provides Extraction, Transformation, and Loading (ETL) capabilities.
-While it's an essential DWH tool, I use it quite a lot also as an **integration** tool, where it performs really well.
+While it's an essential DWH tool, I use it quite a lot also as an **integration** tool, where it performs well.
 
 ![Pentaho Kettle]({{ site.baseurl }}/images/pentaho_kettle_screenshot.jpeg)
 
@@ -20,8 +20,10 @@ different softwares of different vendors. To do quality checks on our tables, an
 Or to fetch *XML* or *Excel* files we get from web services, and integrate the contents into our live systems. To prepare
 monthly *TXT* or *Excel* or *XML* extractions.
 
+
 All those tasks are managed by some *jobs* that calls multiple *transformations*, but I have to schedule those jobs somehow.
 But how?
+
 
 This is what I am using, and I find it pretty *elegant*.
 
@@ -53,6 +55,7 @@ We can start a job very simply with the following command:
 
 which is more convenient than calling the `kitchen.bat` batch file directly since most parameters are pre-configured already.
 
+
 I then scheduled a list of jobs to be executed at different intervals, e.g.
 
 - job_updates_daily
@@ -62,13 +65,16 @@ I then scheduled a list of jobs to be executed at different intervals, e.g.
 
 this is kinda boring but it has to be configured only once, then we won't touch the task scheduler anymore.
 
+
 Each of those jobs will contain a list of sub-jobs that will be executed (e.g. `job_update_json`, `job_send_email`, ...).
+
 
 Whenever I prepare a new job and I want to schedule it daily, I will add it to the `job_updates_daily` outer job. Whenever I want to execute it hourly, I will just remove it from the `job_updates_daily` and add it to the `job_updates_1h` job.
 
 ## Log Table
 
 I wanted to log all tasks that have been executed, whith some additional info like when they have been executed, how long they took, how many rows were updated, etc.
+
 
 The table structure will be like created with this PostgreSQL query:
 
@@ -99,6 +105,7 @@ id | data_esecuzione | flagtipotabella | nometrasformazione | dtiniziocaricament
 here we can see that the task `DWH` / `dim_doctors_update` was executed successfully (`esitocaricamento=0`), the task `Web Apps` / `update_ps_json`
 ended up with an error (`esitocaricamento=2`), while the task `Web Apps` / `update_patients` didn't finish yet (maybe it's still running or maybe it hang...).
 
+
 Whenever we start a new job, I will generate a single row with esitocaricamento=1:
 
 data_esecuzione | flagtipotabella | nometrasformazione | esitocaricamento | dtiniziocaricamento
@@ -107,12 +114,16 @@ data_esecuzione | flagtipotabella | nometrasformazione | esitocaricamento | dtin
 
 and I will add this row to the logs table with an *Insert/Update* step using the lookup keys (`data_esecuzione`, `flagtipotabella`, `nometrasformazione`).
 
+
 Then, whenever the task end succesfully, we will generate a row with the same lookup keys `('2017-04-14', 'DWH', 'dim_doctors_update')` but
 `esitocaricamento=0` and the current_timestamp as the end datetime, and eventually the number of rows read, written and updated.
 
+
 Using an *Insert/Update* task the status will be updated from 1 to 0 (great!), the starting datetime will be left untouched, and will add the end datetime and the number of rows read, written and updated.
 
+
 Whenever the task end unsuccesfully, we are doing the same but we will update the status from 1 to 0.
+
 
 If the tast is still running, the status will be 1. Even if the task won't finish the status will still be 1, so we know that there might be a problem somewhere.
 
@@ -230,6 +241,7 @@ if (esitocaricamento == '0') {
 
 The simplest transformation will read data from one table, perform some tasks on this data,
 ad output some rows with a Table output or an Insert/Update task.
+
 
 The interesting part here is to use an *Output Step Metrics* to get the number or rows *read*, *written*, *updated*
 and make it available to the outer job where the *General Log End* transformation will save those values in the logs table:
