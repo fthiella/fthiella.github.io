@@ -9,9 +9,10 @@ While it's an essential DWH tool, I use it quite a lot also as an **integration*
 
 ![Pentaho Kettle]({{ site.baseurl }}/images/pentaho_kettle_screenshot.jpeg)
 
-We use it to populate a table with the current load of our emergency rooms, then a Perl application will publish the
-contents of the table in JSON format, and finally a Web Application and an Android Application read the content of the JSON
-and shows the data to the users formatted in a nice way:
+For example, we use it to populate a table with the current load of our emergency rooms,
+then a Perl application will publish the contents of the table in JSON format, and finally
+a Web Application and an Android Application read the content of the JSON and shows the data
+to the users formatted in a nice way:
 
 ![First Aid]({{ site.baseurl }}/images/first-aid.jpeg)
 
@@ -21,11 +22,11 @@ Or to fetch *XML* or *Excel* files we get from web services, and integrate the c
 monthly *TXT* or *Excel* or *XML* extractions.
 
 
-All those tasks are managed by some *jobs* that calls multiple *transformations*, but I have to schedule those jobs somehow.
-But how?
+All those tasks are managed by some *jobs* that calls multiple *transformations*, but I have to schedule those jobs somehow. And I want to keep track of which jobs are run, how long they took to execute, which ones failed.
+**But how do do all of this**?
 
 
-This is what I am using, and I find it pretty *elegant*.
+This is what I am using, and I find it very *flexible* and pretty *elegant*.
 
 ## Windows Scheduler
 
@@ -63,20 +64,35 @@ I then scheduled a list of jobs to be executed at different intervals, e.g.
 - job_updates_mondays
 - job_updates_1th_month
 
-this is kinda boring but it has to be configured only once, then we won't touch the task scheduler anymore.
+this has to be configured only once, then we won't touch the task scheduler anymore.
 
 
-Each of those jobs will contain a list of sub-jobs that will be executed (e.g. `job_update_json`, `job_send_email`, ...).
+Each of those jobs will contain a list of sub-jobs that will be executed (e.g. `job_update_json`, `job_send_email`, ...) and that will perform some specific tasks.
 
 
-Whenever I prepare a new job and I want to schedule it daily, I will add it to the `job_updates_daily` outer job. Whenever I want to execute it hourly, I will just remove it from the `job_updates_daily` and add it to the `job_updates_1h` job.
+Whenever I prepare a new job and I want to schedule it daily, I will add this new job to the `job_updates_daily` outer job. And whenever I change my mind and I want to execute it hourly, I will just remove it from the `job_updates_daily` and add it to the `job_updates_1h` job.
 
-## Log Table
+## The Scheduled Jobs
 
-I wanted to log all tasks that have been executed, whith some additional info like when they have been executed, how long they took, how many rows were updated, etc.
+Every scheduled job (daily, 1h, 15min, etc.) is structured this way:
+
+- first we define the starting point for job execution
+- then we execute a transformation that sets in a variable the current date (for logging reasons)
+- finally, we insert in sequence all the jobs we actually want to execute (e.g. `job_update_json`, `job_send_email`, ...)
+
+this is how it looks like:
+
+![Daily Job]({{ site.baseurl }}/images/job_updates_daily.jpeg)
+
+make sure that connections are **black** (unconditional), so even if a job fails the following jobs
+will be executed anyway (if some jobs are related one to each other and you want a **conditional** connection, we will use a sub-job).
+
+## The Log Table
+
+The main goal of the log table is to keep track of all tasks (jobs/transformations) that have been executed, when they have been executed, how long they took, how many rows were updated, which ones failed.
 
 
-The table structure will be like created with this PostgreSQL query:
+The basic table structure is defined this way (in PostgreSQL syntax):
 
 ````sql
 create table log_updates (
@@ -102,45 +118,34 @@ id | data_esecuzione | flagtipotabella | nometrasformazione | dtiniziocaricament
 2  | 2017-04-14      | Web Apps        | update_ps_json     | 2017-04-14 15:03:37 | 2017-04-14 15:05:54 | 2                |      |         |        
 3  | 2017-04-14      | Web Apps        | update_patients    | 2017-04-14 15:05:59 |                     | 1                |      |         |        
 
-here we can see that the task `DWH` / `dim_doctors_update` was executed successfully (`esitocaricamento=0`), the task `Web Apps` / `update_ps_json`
-ended up with an error (`esitocaricamento=2`), while the task `Web Apps` / `update_patients` didn't finish yet (maybe it's still running or maybe it hang...).
+here we can see that:
 
+- the task `DWH` / `dim_doctors_update` was executed successfully (`esitocaricamento=0`)
+- the task `Web Apps` / `update_ps_json` ended up with an error (`esitocaricamento=2`)
+- the task `Web Apps` / `update_patients` didn't finish yet (maybe it's still running or maybe it hang...).
 
-Whenever we start a new job, I will generate a single row with esitocaricamento=1:
+### Adding a new job on the log table
+
+Whenever a new job starts, a single row with `esitocaricamento=1` will be generated:
 
 data_esecuzione | flagtipotabella | nometrasformazione | esitocaricamento | dtiniziocaricamento
 ----------------|-----------------|--------------------|------------------|--------------------
 2017-04-14      | DWH             | dim_doctors_update | 1                | 2017-04-14 15:00:01
 
-and I will add this row to the logs table with an *Insert/Update* step using the lookup keys (`data_esecuzione`, `flagtipotabella`, `nometrasformazione`).
+and an *Insert/Update* step using the lookup keys (`data_esecuzione`, `flagtipotabella`, `nometrasformazione`) will add it to the logs table (or will reset the row if the same task will be performed multiple times on the same day)
+
+### Updating the job status
+
+Then, whenever the task end succesfully, another row will be generated. with the same lookup keys `('2017-04-14', 'DWH', 'dim_doctors_update')` but an updated status `esitocaricamento=0` and an updated current_timestamp as the end datetime (and eventually the number of rows read, written and updated).
 
 
-Then, whenever the task end succesfully, we will generate a row with the same lookup keys `('2017-04-14', 'DWH', 'dim_doctors_update')` but
-`esitocaricamento=0` and the current_timestamp as the end datetime, and eventually the number of rows read, written and updated.
+I'm using an *Insert/Update* step also here, with the same lookup keys, so the status will be updated from 1 to 0 (great!), the datetime_start column will be left untouched but the datetime_end, read, written, updated columns will be updated.
 
 
-Using an *Insert/Update* task the status will be updated from 1 to 0 (great!), the starting datetime will be left untouched, and will add the end datetime and the number of rows read, written and updated.
+Whenever the task end unsuccesfully, we are doing the same but we will update the status from 1 to 2.
 
 
-Whenever the task end unsuccesfully, we are doing the same but we will update the status from 1 to 0.
-
-
-If the tast is still running, the status will be 1. Even if the task won't finish the status will still be 1, so we know that there might be a problem somewhere.
-
-## The Scheduled Jobs
-
-Every scheduled job (daily, 1h, 15min, etc.) is structured this way:
-
-- first we define the starting point for job execution
-- then we execute a transformation that sets in a variable the current date (for logging reasons)
-- finally, we insert in sequence all the jobs we actually want to execute (e.g. `job_update_json`, `job_send_email`, ...)
-
-this is how it looks like:
-
-![Daily Job]({{ site.baseurl }}/images/job_updates_daily.jpeg)
-
-make sure that connections are **black** (unconditional), so even if a job fails the following jobs
-will be executed anyway (if some jobs are related one to each other and you want a **conditional** connection, we will use a sub-job).
+If the tast is still running, the status will be 1. This solves a common logging problem - first we insert a row with the status "executing", then the status will be updated to "completed" once we are sure that the task ended properly.
 
 ## Setting the current date in a variable
 
@@ -152,24 +157,28 @@ and save in the `data_caricamento` variable. Here's how it will look like:
 
 ![Set Load Date]({{ site.baseurl }}/images/set-current-date.jpeg)
 
+(here I assume that having a daily log is fine: only the last execution of the day will be logged, previous ones will be overwritten)
+
 ## How a standard Job will look like
 
-A standard job will performs the following tasks:
+All standard jobs that performs a specific task will share a similar structure:
 
-- first we define a starting point
-- then we will call the transformation `general_log_start` that will put one row in a log table, so we know that the job has started
+- we define a starting point
+- then we will call the transformation `general_log_start` (it puts on the log table a row informing us that that the job has started)
 - then we call one or more transformations (or sub-jobs) that will perform the taks we need, eg. import some data, update a table, etc.
 - when everything is okay (green connections) we will call the `general_log_end` transformation called `general_log_end OK`
 - when anything goes wrong (red connections) we will call the `general_log_end` transformation called `general_log_end KO`
 
-and will look like this:
+and here's how it will look like in Kettle:
 
 ![Standard Job]({{ site.baseurl }}/images/standard-job.jpeg)
 
-for logging reasons, we will define two parameters on each of our jobs:
+as we can see from the picture above, I have defined two parameters:
 
 - flagtipotabella eg. `DWH`, `Web App`, `Other`
 - nometrasformazione eg. `job_update_patients`, `job_send_email`
+
+those parameters will be used for logging purposes by the `general_log_start` and `general_log_end` jobs.
 
 ## General Log Start
 
@@ -204,9 +213,8 @@ and here's how the *Insert/Update* step will look like:
 
 ## General Log End
 
-The general log end is very similar to the general log start. There's only one general log end,
-but we will pass the parameter `esitocaricamento=0` whenever the execution is OK, and `esitocaricamento=2`
-whenever there's an error (right click -> Edit job entry)
+The general log end is very similar to the general log start, but it will either mark the task as **Completed** (`esitocaricamento=0`) or **Failed** (`esitocaricamento=2`). The parameter `esitocaricamento` has to be defined
+as a parameter (right click -> Edit job entry -> parameters).
 
 ![Insert/Update]({{ site.baseurl }}/images/esito_caricamento_ok.jpeg)
 
@@ -214,11 +222,9 @@ only the JavaScript code is different:
 
 ````javascript
 var dtcaricamento = getVariable("data_caricamento","");
-var prog = getVariable("prog","");
 var nometrasformazione = getVariable("nome_trasformazione","");
 var flagtipotabella = getVariable("flag_tipotabella","");
 var esitocaricamento = getVariable("esito_caricamento","");
-
 
 var read = getVariable("LINES_READ","") | "";
 var written = getVariable("LINES_WRITTEN","") | "";
@@ -239,8 +245,8 @@ if (esitocaricamento == '0') {
 
 ## Transformation
 
-The simplest transformation will read data from one table, perform some tasks on this data,
-ad output some rows with a Table output or an Insert/Update task.
+The transformation will just perform the actual task, something like reading data from one table,
+perform some calculations, writing the output to another table.
 
 
 The interesting part here is to use an *Output Step Metrics* to get the number or rows *read*, *written*, *updated*
