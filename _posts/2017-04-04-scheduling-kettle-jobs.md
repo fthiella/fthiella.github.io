@@ -71,9 +71,6 @@ this has to be configured only once, then we won't touch the task scheduler anym
 
 Each of those jobs will contain a list of sub-jobs that will be executed (e.g. `job_update_json`, `job_send_email`, ...) and that will perform some specific tasks.
 
-
-Whenever I prepare a new job and I want to schedule it daily, I will add this new job to the `job_updates_daily` outer job. And whenever I change my mind and I want to execute it hourly, I will just remove it from the `job_updates_daily` and add it to the `job_updates_1h` job.
-
 ## The Scheduled Jobs
 
 Every scheduled job (daily, 1h, 15min, etc.) is structured this way:
@@ -86,8 +83,12 @@ this is how it looks like:
 
 ![Daily Job]({{ site.baseurl }}/images/job_updates_daily.jpeg)
 
-make sure that connections are **black** (unconditional), so even if a job fails the following jobs
-will be executed anyway (if some jobs are related one to each other and you want a **conditional** connection, we will use a sub-job).
+make sure that connections are **black** (unconditional), so a failing jow won't prevent the following jobs
+to be executed.
+
+
+Whenever I prepare a new job and I want to schedule it daily, I will add this new job to the `job_updates_daily` outer job. And whenever I change my mind and I want to execute it hourly, I will just remove it from the `job_updates_daily` and add it to the `job_updates_1h` job.
+
 
 ## The Log Table
 
