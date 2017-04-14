@@ -23,7 +23,9 @@ monthly *TXT* or *Excel* or *XML* extractions.
 
 
 All those tasks are managed by some *jobs* that calls multiple *transformations*, but I have to schedule those jobs somehow. And I want to keep track of which jobs are run, how long they took to execute, which ones failed.
-**But how do do all of this**?
+
+
+**But how's an effective way to do all of this**?
 
 
 This is what I am using, and I find it very *flexible* and pretty *elegant*.
