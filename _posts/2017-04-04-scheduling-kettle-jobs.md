@@ -171,7 +171,7 @@ This task will insert a new row on the logs table with the following information
 
 Here's how the *generate rows* step will look like:
 
-![Generate Rows]({{ site.baseurl }}/general_log_start_generate_rows.jpeg)
+![Generate Rows]({{ site.baseurl }}/images/general_log_start_generate_rows.jpeg)
 
 Here's a JavaScript step that will get the parameters from the outer job:
 
