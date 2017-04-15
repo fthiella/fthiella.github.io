@@ -83,7 +83,7 @@ this is how it looks like:
 
 ![Daily Job]({{ site.baseurl }}/images/job_updates_daily.jpeg)
 
-make sure that connections are **black** (unconditional), so a failing jow won't prevent the following jobs
+make sure that connections are **black** (unconditional), so a failing job won't prevent the following jobs
 to be executed.
 
 
