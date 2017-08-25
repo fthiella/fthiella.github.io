@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Adminer for Oracle"
-date:   2018-07-31 13:12:00 +0200
+date:   2017-07-31 13:12:00 +0200
 categories: sql
 ---
 I'm becoming a fan of [Adminer](http://www.adminer.org), a database management tool written in PHP, with lots of features and consisting

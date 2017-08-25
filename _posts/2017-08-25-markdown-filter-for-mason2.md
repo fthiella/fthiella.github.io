@@ -7,9 +7,9 @@ categories: perl mason
 Mason comes with some built-in filters that can be used to process portions of content in a component.
 The standard way to invoke a filter is in a block:
 
-````perl
+````
 % $.Trim {{
-     This string will be trimmed
+    This string will be trimmed
 % }}  # end Trim
 ````
 
@@ -46,7 +46,7 @@ use Mason::PluginRole;
 use Text::MultiMarkdown qw(markdown);
 
 method Markdown () {
-	my $m = Text::Markdown->new;
+    my $m = Text::Markdown->new;
     return sub { markdown($_[0]) }
 }
 
@@ -54,7 +54,7 @@ method Markdown () {
 ````
 which I put in `lib/MyApp` directory. Then I tried it in a `index.mc` page:
 
-````perl
+````
 <%class>
   with 'Markdown::Filters';
 </%class>
@@ -74,7 +74,7 @@ This page is written using **markdown** syntax:
 
 another way using the block invocation syntax:
 
-````perl
+````
 <%class>
   with 'Markdown::Filters';
 </%class>
@@ -116,7 +116,7 @@ one more way is to use a Base component, telling to process all inner components
 </%augment>
 ````
 
-then your page can contain just Markdown syntax, here's an `index.mc` example page:
+then your page can contain just Markdown syntax, here's an `index.mc` example page (an empy line at the beginning seems to be needed here):
 
 ````perl
 
