@@ -7,9 +7,9 @@ categories: perl mason
 Mason comes with some built-in filters that can be used to process portions of content in a component.
 The standard way to invoke a filter is in a block:
 
-    % $.Trim {{
+    % $.Trim \{\{
         This string will be trimmed
-    % }}
+    % \}\}
     # end Trim
 
 but filters can appear also inside a `<% %>` tag:
