@@ -7,9 +7,9 @@ categories: perl mason
 Mason comes with some built-in filters that can be used to process portions of content in a component.
 The standard way to invoke a filter is in a block:
 
-    % $.Trim \{{
+    % $.Trim \{\{
         This string will be trimmed
-    % \}}
+    % \}\}
     # end Trim
 
 but filters can appear also inside a `<% %>` tag:
@@ -80,7 +80,7 @@ another way using the block invocation syntax:
 
 <h1>Let's try the block invocation syntax</h1>
 
-% $.Markdown \{{
+% $.Markdown \{\{
 ## Do tables work?
 
 id | description
@@ -90,7 +90,7 @@ id | description
 03 | then stop
 
 yes `MultiMarkdown` supports tables as well.
-% \}}
+% \}\}
 ````
 
 one more way is to use a Base component, telling to process all inner components with Markdown:
@@ -107,9 +107,9 @@ one more way is to use a Base component, telling to process all inner components
       <title>Mason and Markdown</title>
     </head>
     <body>
-% $.Markdown {{
+% $.Markdown \{\{
       <% inner() %>
-% }}
+% \}\}
     </body>
   </html>
 </%augment>
