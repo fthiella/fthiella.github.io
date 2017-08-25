@@ -56,7 +56,7 @@ Finally we can modify the file `\biserver-ce\pentaho-solutions\system\pentaho.xm
 <login-show-sample-users-hint>false</login-show-sample-users-hint>
 ````
 
-Finally we can update our logo:
+and also our logo:
 
 ````
 biserver-ce/pentaho-solutions/system/common-ui/resources/themes/images/puc-login-logo.png
