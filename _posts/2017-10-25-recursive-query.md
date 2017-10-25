@@ -6,14 +6,12 @@ categories: sql postgresql
 ---
 My company uses a booking table like this simplified one:
 
-````
 id | next_id | status | various_info       | booking_date | appointment_date | transfer_date | cancel_date
 ---|---------|--------|--------------------|--------------|------------------|---------------|------------
 1  |         | B      | Paul from New York | 2017-10-01   | 2017-10-05       |               |
 2  | 3       | T      | Lisa from London   | 2017-10-02   | 2017-10-05       | 2017-10-04    |
 3  |         | B      | Lisa from London   | 2017-10-04   | 2017-11-03       |               |
 4  |         | C      | Tom from Glasgow   | 2017-10-07   | 2017-11-04       |               | 2017-10-25
-````
 
 as you can see, anytime a user books an appointment, a row is added to this table where we store various user info, the booking date which is the current_date, and the date of the appointment. When the booking is active, the status of the row is `B = Booked`.
 
@@ -57,13 +55,11 @@ select * from recursive_bookings
 
 this query on the dataset above will return the following rows:
 
-````
 id | last_id | level
 ---|---------|------
 1  | 1       | 1
 3  | 3       | 1
 2  | 3       | 2
-````
 
 as you can see, for the booking with id=3 we have multiple rows:
 - id=3 and level 1 which is the last and active one
