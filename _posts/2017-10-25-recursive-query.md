@@ -61,7 +61,7 @@ id | last_id | level
 3  | 3       | 1
 2  | 3       | 2
 
-as you can see, for the booking with id=3 we have multiple rows:
+as you can see, for the booking with last_id=3 we have multiple rows:
 - id=3 and level 1 which is the last and active one
 - id=2 and level 2 which is the first time the user booked the appointment
 and there might be many others in case the same booking is transferred multiple times.
