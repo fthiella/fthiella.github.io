@@ -19,17 +19,17 @@ Anytime a patient has to do some kind of (non urgent) surgery, we create a new e
 - then the hospital will **give an appointment**, which can be updated (different room, different time) or changed (different day);
 - finally he/she's got the surgery and the event is considered **completed**:
 
-| id | event_id |           status | change_date | other |
-|----|----------|------------------|-------------|-------|
-| 1  | 1        |          Initial |  2017-10-07 |   ... |
-| 2  | 1        |          Initial |  2017-10-08 |   ... |
-| 3  | 1        |      Preparation |  2017-10-09 |   ... |
-| 4  | 1        |      Preparation |  2017-10-10 |   ... |
-| 5  | 1        |            Ready |  2017-10-11 |   ... |
-| 6  | 1        | Appoinment-Given |  2017-10-12 |   ... |
-| 7  | 1        | Appoinment-Given |  2017-10-13 |   ... |
-| 8  | 1        | Appoinment-Given |  2017-10-14 |   ... |
-| 9  | 1        |        Completed |  2017-10-15 |   ... |
+id | event_id |           status | change_date | other
+---|----------|------------------|-------------|------
+1  | 1        |          Initial |  2017-10-07 |   ...
+2  | 1        |          Initial |  2017-10-08 |   ...
+3  | 1        |      Preparation |  2017-10-09 |   ...
+4  | 1        |      Preparation |  2017-10-10 |   ...
+5  | 1        |            Ready |  2017-10-11 |   ...
+6  | 1        | Appoinment-Given |  2017-10-12 |   ...
+7  | 1        | Appoinment-Given |  2017-10-13 |   ...
+8  | 1        | Appoinment-Given |  2017-10-14 |   ...
+9  | 1        |        Completed |  2017-10-15 |   ...
 
 There are a lot of useful informations than can be calculated here: how long does it take for a Ready event to be Completed? How long does it take
 the initial or the preparation phase? And what about the whole process?
@@ -62,17 +62,17 @@ select * from c1_detect_changes
 
 and the result is:
 
-    | event_id | id |           status | n |
-    |----------|----|------------------|---|
-    |        1 |  1 |          Initial | 0 |
-    |        1 |  2 |          Initial | 0 |
-    |        1 |  3 |      Preparation | 1 |
-    |        1 |  4 |      Preparation | 0 |
-    |        1 |  5 |            Ready | 1 |
-    |        1 |  6 | Appoinment-Given | 1 |
-    |        1 |  7 | Appoinment-Given | 0 |
-    |        1 |  8 | Appoinment-Given | 0 |
-    |        1 |  9 |             Done | 1 |
+event_id | id |           status | n
+---------|----|------------------|--
+       1 |  1 |          Initial | 0
+       1 |  2 |          Initial | 0
+       1 |  3 |      Preparation | 1
+       1 |  4 |      Preparation | 0
+       1 |  5 |            Ready | 1
+       1 |  6 | Appoinment-Given | 1
+       1 |  7 | Appoinment-Given | 0
+       1 |  8 | Appoinment-Given | 0
+       1 |  9 |             Done | 1
 
 (it really doesn't matter if the first row is set to 0 -no status change- or 1 -status change detected-, but what's really important is that all other status changes are detected correctly with a 1).
 
@@ -98,17 +98,17 @@ select * from c2_running_sum;
 
 can you see it? Every row that shares the same consecutive status is now part of the same group:
 
-    | event_id | id |           status | g |
-    |----------|----|------------------|---|
-    |        1 |  1 |          Initial | 0 |
-    |        1 |  2 |          Initial | 0 |
-    |        1 |  3 |      Preparation | 1 |
-    |        1 |  4 |      Preparation | 1 |
-    |        1 |  5 |            Ready | 2 |
-    |        1 |  6 | Appoinment-Given | 3 |
-    |        1 |  7 | Appoinment-Given | 3 |
-    |        1 |  8 | Appoinment-Given | 3 |
-    |        1 |  9 |             Done | 4 |
+event_id | id |           status | g
+---------|----|------------------|--
+       1 |  1 |          Initial | 0
+       1 |  2 |          Initial | 0
+       1 |  3 |      Preparation | 1
+       1 |  4 |      Preparation | 1
+       1 |  5 |            Ready | 2
+       1 |  6 | Appoinment-Given | 3
+       1 |  7 | Appoinment-Given | 3
+       1 |  8 | Appoinment-Given | 3
+       1 |  9 |             Done | 4
 
 ## Get the first status change for each group
 
@@ -125,13 +125,13 @@ select * from c3_get_first_id_per_group;
 
 and here's the result:
 
-| event_id | min_id |           status |
-|----------|--------|------------------|
-|        1 |      9 |             Done |
-|        1 |      6 | Appoinment-Given |
-|        1 |      3 |      Preparation |
-|        1 |      5 |            Ready |
-|        1 |      1 |          Initial |
+ event_id | min_id |           status
+----------|--------|-----------------
+        1 |      9 |             Done
+        1 |      6 | Appoinment-Given
+        1 |      3 |      Preparation
+        1 |      5 |            Ready
+        1 |      1 |          Initial
 
 ## Back to Initial
 
