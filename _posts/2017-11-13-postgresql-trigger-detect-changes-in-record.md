@@ -49,9 +49,15 @@ FOR EACH ROW
 there's still a little difference between MySQL and PostgreSQL, as MySQL will execute the update only whenever there's an actual update:
 
 ```sql
-insert into mytable (id, value) values (1, 'Hello'); -- updated_timestamp set to current timestamp
-update mytable set value='Hello' where id=1;         -- MySQL won't update current_timestamp, PostgreSQL will
-update mytable set value='Hi!' where id=1;           -- both MySQL and PostgreSQL will update the record
+insert into mytable (id, value) values (1, 'Hello');
+-- updated_timestamp set to current timestamp
+
+update mytable set value='Hello' where id=1;
+-- PostgreSQL will update the updated_timestamp column
+-- but MySQL no because there are no changes in record
+
+update mytable set value='Hi!' where id=1;
+-- both MySQL and PostgreSQL will update the updated_timestamp column
 ````
 
 but we can add more flexibility adding some conditions to the trigger:
@@ -60,7 +66,7 @@ but we can add more flexibility adding some conditions to the trigger:
 CREATE TRIGGER mytable_update
 BEFORE UPDATE ON mytable
 FOR EACH ROW
-  WHEN (old.value)::text IS DISTINCT FROM (new.value)::text)
+  WHEN ((old.value)::text IS DISTINCT FROM (new.value)::text)
   EXECUTE PROCEDURE set_update_timestamp()
 ````
 
