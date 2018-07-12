@@ -78,5 +78,6 @@ $html =~ s/\[\[ (\$\w*) \]\]/$1/eeg;
 
 print $html;
 ````
-I am a busy person so I just needed something quick to write with a good quality output and I believe this is a good solution. The syntax is inspired somehow to the Mason2 syntax.
+This is not a perfect solution, but I just needed a quick tool to export my data and I wanted it to look good.
+The syntax is inspired somehow to the Mason2 syntax.
 A real Mason2/(or anything else) component of course is much more flexible but at the same time is little slower to write and more difficult to mantain.
