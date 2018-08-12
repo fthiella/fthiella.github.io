@@ -40,4 +40,4 @@ for /f "delims=" %r in (example.txt) do @(set s=%r && echo !s:~0,10!)
 ````
 
 not really intuitive, is it? I think I am missing my teenager days when I used to program Assembly x86: that was complex,
-but for good reasons. Cmd scripting is still complicated, but for no knowns reasons!
+but for good reasons. Cmd scripting is still complicated, but for no knowns reasons! Also, please note that this solution is painfully slow.
