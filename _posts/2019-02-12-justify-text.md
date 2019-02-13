@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Daily coding problem #28: Write an algorithm to justify text"
-date:   2018-08-10 14:24:00 +0200
+date:   2019-02-13 23:11:00 +0200
 categories: python, daily coding problem
 ---
 Problem:
@@ -35,79 +35,40 @@ This is how I am going to call the function:
 
 ````python
 if __name__ == '__main__':
-	print("\n".join(justify(["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"], 16)))
+	print("\n".join(justify(["the", "quick", "brown", "fox",
+		"jumps", "over", "the", "lazy", "dog"], 16)))
 ````
 
-This is the code that appends all words from the array `words` into the new array `w`,
-eventually splitting words longer than k into k sized chunks. Any word in `w` would not be
-longer than `k`.
+To make things easier at a later time, I am going to appends all words from the array `words` into the new array `w`,
+eventually splitting words longer than k into k sized chunks. This to make sure that any word in `w` would not be
+longer than `k`:
 
 ````python
-	w = []
+w = []
 
-	for word in words:
-		if len(word)<=k:
-			# no need to split, just appends
-			w.append(word)
-		else:
-			# split by length
-			for i in range(0, len(word), k):
-				w.append(word[i:i+k])
+for word in words:
+	if len(word)<=k:
+		# no need to split, just appends
+		w.append(word)
+	else:
+		# split by length
+		for i in range(0, len(word), k):
+			w.append(word[i:i+k])
 ````
 
 Improvements needed:
 
-1. While it makes things easier at a later time, I don't like to create a copy of the array
-2. The code doesn't look elegant and pythonic
+1. While it makes things easier at a later time, I don't really like the approach of creating a copy of the array
+2. How to make the code look more pythonic?
 
-The logic then is simple: I start with an empty buffer where I add each word, one by one.
-If there's still space on the buffer for the current word I'll just add it, but if the current
-word is going to overflow, I'll "justify" the words on the current buffer, I'll empty it and
-then I'll add the current word.
+Once I have all words (no longer than `k`) in my array, the logic then is simple: I keep a buffer, empty at first,
+where I add each word, one by one, if there's still space for it. But if the current
+word is going to make the line to overflow, I'll just output the words on the current buffer in justified format,
+then I'll empty the buffer and start the process again.
 
-This is the `justify_line` function, that accept as input the array `w` of words that fits in the current line,
-the length `l` of the current words (not considering spaces) - I could calculate it inside the function,
-but it is already available so I am just using what I have, and the width of the like `k`.
+The code is this:
 
 ````python
-def justify_line(w, l, k):
-	if len(w)==1:
-		return w[0].ljust(k)
-	else:
-		narrow_spaces, wide_words = divmod(k - l, len(w)-1)
-		ns = " " * narrow_spaces
-		ws = " " * (narrow_spaces + 1)
-
-		return ns.join([ws.join(w[0:wide_words+1]), *w[wide_words+1:]])
-````
-
-If we have just 1 word then I'll just return this word left-justified with spaces at the right (this is from the problem specs).
-
-If we have more than 1 word then we have to calculate how many spaces to put between each word. The total number of spaces needed
-would be `k - l` that has to be divided by the number of words minus one (as spaces has to be put between each word).
-
-The minimum number of spaces is the integer division `k-l // len(w)-1` but there might be some words that need one extra space.
-
-For example if I call `justify_line(['the', 'quick', 'brown'], 13, 16)`, `narrow_spaces` will be set to 1 but `wide_words` would be
-set to 1 as well meaning that the first word needs one more extra space than `narrow_spaces` before the next word.
-
-- `ws.join(w[0:wide_words+1])` will join the first and second words with wider spaces
-- `ns.join()` will then join the wider-spaced-words with all remaining words
-
-This is my resulting code:
-
-````python
-def justify_line(w, l, k):
-	print(w, l, k)
-	if len(w)==1:
-		return w[0].ljust(k)
-	else:
-		narrow_spaces, wide_words = divmod(k - l, len(w)-1)
-		ns = " " * narrow_spaces
-		ws = " " * (narrow_spaces + 1)
-
-		return ns.join([ws.join(w[0:wide_words+1]), *w[wide_words+1:]])
-
 def justify(words, k):
 	# w will containg words, making sure that the maximum length of each word is <= k
 	w = []
@@ -140,12 +101,39 @@ def justify(words, k):
 		res.append(justify_line(current_words, current_length, k))
 
 	return res
-
-if __name__ == '__main__':
-	print("\n".join(justify(["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"], 16)))
 ````
 
-I also wrote this module to test the justify function:
+Then I just need the `justify_line` function, that accept as input the array `w` of words that fits in the current line,
+the length `l` of the current words (not considering spaces), and the width of the like `k`.
+
+(I could calculate the total length `l` inside my function, but since this is already available I'll just pass to it)
+
+````python
+def justify_line(w, l, k):
+	if len(w)==1:
+		return w[0].ljust(k)
+	else:
+		narrow_spaces, wide_words = divmod(k - l, len(w)-1)
+		ns = " " * narrow_spaces
+		ws = " " * (narrow_spaces + 1)
+
+		return ns.join([ws.join(w[0:wide_words+1]), *w[wide_words+1:]])
+````
+
+If we have just 1 word then I'll just return this word left-justified with spaces at the right (this is from the problem specs).
+
+If we have more than 1 word then we have to calculate how many spaces to put between each word. The total number of spaces needed
+would be `k - l` that has to be divided by the number of words minus one (as spaces has to be put between each word).
+
+The minimum number of spaces is the integer division `k-l // len(w)-1` but there might be some words that need one extra space.
+
+For example if I call `justify_line(['the', 'quick', 'brown'], 13, 16)`, `narrow_spaces` will be set to 1 but `wide_words` would be
+set to 1 as well meaning that the first word needs one more extra space than `narrow_spaces` before the next word.
+
+- `ws.join(w[0:wide_words+1])` will join the first and second words with wider spaces
+- `ns.join()` will then join the wider-spaced-words with all remaining words
+
+To make things easier during developement, and to make sure that a little fix won't mess up everything, I wrote this testing unit:
 
 ````python
 import unittest
