@@ -23,13 +23,26 @@ Problem:
 > you should return the following:
 >
 > `["the  quick brown",` # 1 extra space on the left
+>
 > ` "fox  jumps  over",` # 2 extra spaces distributed evenly
+>
 > ` "the   lazy   dog"]` # 4 extra spaces distributed evenly
 
 This looks like a problem that can be quickly solved in a few lines of codes, but it would
 actually require a little more lines than expected. While the case of a word longer than the
 given integer `k` is not specifically covered in the problem description, I assume than such
 word has to be split into k sized chunks.
+
+The logic is going to be like this:
+
+- I keep a buffer that holds all words that can fit into a single line. This buffer is empty at first.
+- From the given array I read each word, one by one. I eventually split each word into k-sized chunks.
+- Is the current word / word chunk going to fit into the current line? If there's still space for it I am going
+  to add it to the current line buffer.
+- If the current word / chunk won't fit, I am going to output the current line (all words in the buffer, with
+  proper space justification). The buffer will then be set to contain only the current word.
+- When I am finished reading all words, I am going to output the current line (unless the buffer is empty, which
+  will happen only if the array of words is empty as well)
 
 This is how I am going to call the function:
 
@@ -39,63 +52,30 @@ if __name__ == '__main__':
 		"jumps", "over", "the", "lazy", "dog"], 16)))
 ````
 
-To make things easier at a later time, I am going to appends all words from the array `words` into the new array `w`,
-eventually splitting words longer than k into k sized chunks. This to make sure that any word in `w` would not be
-longer than `k`:
-
-````python
-w = []
-
-for word in words:
-	if len(word)<=k:
-		# no need to split, just appends
-		w.append(word)
-	else:
-		# split by length
-		for i in range(0, len(word), k):
-			w.append(word[i:i+k])
-````
-
-Improvements needed:
-
-1. While it makes things easier at a later time, I don't really like the approach of creating a copy of the array
-2. How to make the code look more pythonic?
-
-Once I have all words (no longer than `k`) in my array, the logic then is simple: I keep a buffer, empty at first,
-where I add each word, one by one, if there's still space for it. But if the current
-word is going to make the line to overflow, I'll just output the words on the current buffer in justified format,
-then I'll empty the buffer and start the process again.
-
-The code is this:
+And this is how my `justify` function looks like:
 
 ````python
 def justify(words, k):
-	# w will containg words, making sure that the maximum length of each word is <= k
-	w = []
-
-	for word in words:
-		if len(word)<=k:
-			w.append(word)
-		else:
-			# split by length
-			for i in range(0, len(word), k):
-				w.append(word[i:i+k])
-
 	res = []
-
 	current_length = 0
 	current_words = []
-	for i in range(0, len(w)):
-		# try to add a new word to current_words / current_length
-		if len(w[i]) + current_length + len(current_words) <= k:
-			# can fit
-			current_words.append(w[i])
-			current_length += len(w[i])
-		else:
-			# won't fit
-			res.append(justify_line(current_words, current_length, k))
-			current_words = [w[i]]
-			current_length = len(w[i])
+
+	for word in words:
+		# read each word
+		for i in range(0, len(word), k):
+			# split each row into k-sized chuncks
+			chunk = word[i:i+k]
+
+			# try to add a new word to current_words / current_length
+			if len(chunk) + current_length + len(current_words) <= k:
+				# can fit
+				current_words.append(chunk)
+				current_length += len(chunk)
+			else:
+				# won't fit
+				res.append(justify_line(current_words, current_length, k))
+				current_words = [chunk]
+				current_length = len(chunk)
 
 	if current_words:
 		res.append(justify_line(current_words, current_length, k))
@@ -103,33 +83,34 @@ def justify(words, k):
 	return res
 ````
 
-Then I just need the `justify_line` function, that accept as input the array `w` of words that fits in the current line,
+The final part is handled by the `justify_line` function, that accept as input the array `w` of words that fits in the current line,
 the length `l` of the current words (not considering spaces), and the width of the like `k`.
 
-(I could calculate the total length `l` inside my function, but since this is already available I'll just pass to it)
+(`l` is not strictly necessary, I have all elements to calculate it inside the function, but since it's alreay available I'll just pass it to the function)
 
 ````python
 def justify_line(w, l, k):
 	if len(w)==1:
 		return w[0].ljust(k)
 	else:
-		narrow_spaces, wide_words = divmod(k - l, len(w)-1)
+		narrow_spaces, wider_words = divmod(k - l, len(w)-1)
 		ns = " " * narrow_spaces
 		ws = " " * (narrow_spaces + 1)
 
-		return ns.join([ws.join(w[0:wide_words+1]), *w[wide_words+1:]])
+		return ns.join([ws.join(w[0:wider_words+1]), *w[wider_words+1:]])
 ````
 
-If we have just 1 word then I'll just return this word left-justified with spaces at the right (this is from the problem specs).
+- If the current line contains only one word then I'll just return this
+  word left-justified with spaces at the right (as from the problem specs).
 
-If we have more than 1 word then we have to calculate how many spaces to put between each word. The total number of spaces needed
-would be `k - l` that has to be divided by the number of words minus one (as spaces has to be put between each word).
+- If instead the line is composed by more words, we have to calculate:
+  - the total number of spaces needed (`k - l`)
+  - the minimum number of spaces between each word (total numer of spaces DIV number of words minus one)
+  - the number of words that require an additional space (total number of spaces MOD number of words minus one)
 
-The minimum number of spaces is the integer division `k-l // len(w)-1` but there might be some words that need one extra space.
-
-For example if I call `justify_line(['the', 'quick', 'brown'], 13, 16)`, `narrow_spaces` will be set to 1 but `wide_words` would be
-set to 1 as well meaning that the first word needs one more extra space than `narrow_spaces` before the next word.
-
+For example if I call `justify_line(['the', 'quick', 'brown'], 13, 16)`:
+- `narrow_spaces` will be set to 1 (one space between each word)
+- `wider_words` will be set to 1 (the first word needs one more extra space after it)
 - `ws.join(w[0:wide_words+1])` will join the first and second words with wider spaces
 - `ns.join()` will then join the wider-spaced-words with all remaining words
 
