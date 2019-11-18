@@ -10,7 +10,7 @@ So I started to work on it, trying to figure out a simpler solution!
 
 First of all, I needed to store all recordset information on a variable, shared to all components. The hashref `recordset` goes to the `Base.mp` pure perl component:
 
-````perl
+{% highlight perl %}
 my $recordset = {
   # Allarms
   "alarms" => {
@@ -28,21 +28,21 @@ my $recordset = {
     json => 'json/alarms.json'
   },
 }
-````
+{% endhighlight %}
 
 Pretty elegant! Also I can use all kinds of Perl stuff to make it more tidy or more compact (e.g. I can specify a connections hash_ref, and I can calculate the array_ref columns somehow.. also, Sentosa has to process every query every time we access a recordset, while with this systems I can pre-calculate all queries at runtime the first time we access it).
 
 How can I share this recordset data to all components? I can specify a method at the end of the `Base.mp` component:
 
-````perl
+{% highlight perl %}
 method getrecordset($rs) {
   return $recordset->{$rs};
 }
-````
+{% endhighlight %}
 
 and then the default handler inside the json directory can be just like this:
 
-````perl
+{% highlight perl %}
 <%flags>
 extends => '../Base.mp';
 </%flags>
@@ -81,21 +81,22 @@ extends => '../Base.mp';
     sEcho => $.sEcho,
     searchArgs => $.args
 &>
-````
+{% endhighlight %}
 
 it will inherit only from the Base.mp (no html, only perl!) ... and yes, I know this is a little ugly and not too elegant, but at least I can use the query-data-widget (and the query-widget as well) without major updates. I will work on making it better :)
 
 *Ah only one thing has to be updated!* instead of working on the `$.columns` object I figured out that I have to work on a local copy of the object:
 
-````perl
+{% highlight perl %}
     use Clone 'clone';
     my $local_columns = clone($.columns);
-````
+{% endhighlight %}
+
 otherwise, everytime I modify the columns object to add a temporary filter, the next time the filter is still there - because it's a hash_ref!
 
 To call the query widget I use this:
 
-````perl
+{% highlight perl %}
 <&
   query-widget.mi,
     query => {
@@ -107,6 +108,6 @@ To call the query widget I use this:
       params => { 'table_link'  => undef, 'hide_title'  => 1, 'hide_top'    => 1, 'hide_bottom' => 0 }
     }
 &>
-````
+{% endhighlight %}
 
 Well this environment is much more comfortable, I think I can add plenty of improvements soon, and I think I can write a good manual of how to use those components. See you soon!

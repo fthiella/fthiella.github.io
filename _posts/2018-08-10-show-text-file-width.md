@@ -8,15 +8,15 @@ I am often working with fixed width text files. Sometimes text files aren't prod
 
 This is one liner perl thay I use quite often, on a Windows shell:
 
-````perl
+{% highlight cmd %}
 c:\> perl -lne "$h{length($_)}=1; END{print join \"\n\", sort keys %h}" source.txt
-````
+{% endhighlight %}
 
 this is how it looks like in Linux, with a simpler way of quoting:
 
-````bash
+{% highlight bash %}
 $ perl -lne '$h{length($_)}=1; END{print join "\n", sort keys %h}' source.txt
-````
+{% endhighlight %}
 
 - the -l flag handles newlines
 - the -n flag adds a while loop

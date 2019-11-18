@@ -23,7 +23,7 @@ There I my `adminer.php` file which will load the original `adminer.php` along w
 
 ### adminer.php
 
-````php
+{% highlight php %}
 <?php
 function adminer_object() {
     // required to run any plugin
@@ -51,7 +51,7 @@ function adminer_object() {
 // include original Adminer or Adminer Editor
 include "./adminer-4.3.1-en.php";
 ?>
-````
+{% endhighlight %}
 
 on the same directory I have put the original adminer `adminer-4.3.1-en.php`, and 
 in the directory `plugins` I have put the `plugin.php` file, which is required to run any plugin,
@@ -66,9 +66,9 @@ you can make sure that only the `adminer.php` will be accessible to the outside 
 
 This function will return the Markdown output options:
 
-````php
+{% highlight php %}
 return array('markdown' => 'Markdown');
-````
+{% endhighlight %}
 
 this output will be added to the existing list.
 

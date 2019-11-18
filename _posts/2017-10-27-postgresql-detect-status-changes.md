@@ -45,7 +45,7 @@ To detect status changes we can make use of the LAG window function:
 that will return, for every row, the status value of the previous (1) row.  If there's no such row in the window partitioned by the `event_id`,
 it will return the current status. Then we can compare the previous value with the current value, and return 1 if a change is detected, and 0 otherwise:
 
-````sql
+{% highlight sql %}
 with c1_detect_changes as (
 select
   event_id,
@@ -58,7 +58,7 @@ order by
   event_id, id
 )
 select * from c1_detect_changes
-````
+{% endhighlight %}
 
 and the result is:
 
@@ -84,7 +84,7 @@ We can calculate a running sum:
 
 our query becomes:
 
-````sql
+{% highlight sql %}
 with c2_running_sum as (
 select
   event_id,
@@ -94,7 +94,7 @@ select
 from c1_detect_changes
 )
 select * from c2_running_sum;
-````
+{% endhighlight %}
 
 can you see it? Every row that shares the same consecutive status is now part of the same group:
 
@@ -114,14 +114,14 @@ event_id | id |           status | g
 
 Now we can get the first (minimum) id for every group (g):
 
-````sql
+{% highlight sql %}
 whti c3_get_first_id_per_group as (
 select event_id, g, status, min(id) as min_id
 from c2_running_sum
 group by event_id, g, status
 )
 select * from c3_get_first_id_per_group;
-````
+{% endhighlight %}
 
 and here's the result:
 
@@ -138,7 +138,7 @@ and here's the result:
 We also have an additional requirement: sometimes it might happen that an event has to be sent back to the **Initial** status,
 so I want to ignore all things that happened previously, what is done is done, and only consider the last Initial status:
 
-````sql
+{% highlight sql %}
 with c4_get_last_initial as (
 select
   event_id,
@@ -153,7 +153,7 @@ group by
 c5_latest_status_changes as (
 select c3.event_id, min_id from c3_get_first_id_per_group as c3 inner join c4_get_last_initial as c4 on c3.event_id=c4.event_id where c3.min_id >= c4.max_initial
 )
-````
+{% endhighlight %}
 
 c4 will find the latest initial status, c5 will return all events after the last initial status.
 
@@ -161,15 +161,15 @@ c4 will find the latest initial status, c5 will return all events after the last
 
 The latest query C5 will return the event_id and the min_id of the rows to be considered:
 
-````sql
+{% highlight sql %}
 select changes.*
 from changes
 where (event_id, id) in (select * from c5_latest_status_changes)
-````
+{% endhighlight %}
 
 and we can pivot the results with FILTER (if we have at least PostgreSQL 9.4)
 
-````sql
+{% highlight sql %}
 select
   event_id,
   max(change_date) filter (where status='Initial') as initial,
@@ -181,6 +181,6 @@ from
   changes where (event_id, id) in (select * from c5)
 group by
   event_id
-````
+{% endhighlight %}
 
 A fiddle to play with some data is [here](http://sqlfiddle.com/#!17/7113d/1).

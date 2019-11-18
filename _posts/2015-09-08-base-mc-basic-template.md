@@ -25,21 +25,25 @@ so they are interchangeable quite easily.
 
 Base.mc is the superclass of most components of the project, the following flag is implicitly set:
 
-````perl
+{% highlight perl %}
+{% raw %}
 <%flags>
   extends => 'Base.mc'
 </%flags>
-````
+{% endraw %}
+{% endhighlight %}
 
 and it will provide the standard template for most of the components on the application.
 This means that if my `index.mc` contains:
 
-````html
+{% highlight html %}
+{% raw %}
 <h1>Welcome to Sentosa Autoforms!</h1>
 Hello, this is my new project,
 work is still in progress
 but please come back soon!
-````
+{% endraw %}
+{% endhighlight %}
 
 it will be nicely wrapped by the template provided in `Base.mc`, with the html, head, body, includes, and everything!
 
@@ -49,7 +53,8 @@ This is my `Base.mc` - I've just removed something to make this post smaller.
 
 I still have some doubts, here I'm using `title` and `_app` parameters, but what if some component is POSTing a `title` or an `_app` value? Anyways:
 
-````perl
+{% highlight perl %}
+{% raw %}
 <%class>
 has 'title';
 has '_app';
@@ -74,7 +79,8 @@ has '_app';
 </body>
 </html>
 </%augment>
-````
+{% endraw %}
+{% endhighlight %}
 
 All CSS and JavaScript code that has to be included in the head section has been moved to the `head_includes.mi` component, all code that has to be included in the body section has been moved to `body_includes.mi`.
 
@@ -82,21 +88,24 @@ The inner component will be wrapped inside the template.
 
 I had to remove the newline after augment wrap, otherwise it will appear as the first line on the generated HTML page:
 
-````perl
+{% highlight perl %}
 <%augment wrap><!DOCTYPE html>
-````
+{% endhighlight %}
 
 The title will be defined in an inner component, so we have to use defer:
 
-````perl
+{% highlight perl %}
+{% raw %}
 % $.Defer {{
     <title><% $.title %></title>
 % }}
-````
+{% endraw %}
+{% endhighlight %}
 
 I translated some components from HTML to Mason, for example I created a `dropdown_alerts.mc` component that calls the internal `dropdown_alerts.mi`:
 
-````
+{% highlight perl %}
+{% raw %}
 <& dropdown_alerts.mi, items=>
     [
       {type=>'fa-comment', notification=>'New Comment', when=>'4 minutes ago'},
@@ -105,7 +114,8 @@ I translated some components from HTML to Mason, for example I created a `dropdo
       {type=>'fa-tasks', notification=>'New Task', when=>'5 minutes ago'},
       {type=>'fa-upload', notification=>'Server Rebooted', when=>'15 minutes ago'},
     ] &>
-````
+{% endraw %}
+{% endhighlight %}
 
 Isn't this nice? Yes! I only converted few components, because I'll have to use AJAX sooner or later.
 Now I just wanted to have a template and I can move on working on my project!

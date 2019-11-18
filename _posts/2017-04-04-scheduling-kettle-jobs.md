@@ -36,7 +36,7 @@ I wanted to use the standard Windows Scheduler, not the Pentaho scheduler. For L
 First of all I have created a `StartJob.cmd` batch file, that accepts only one parameter: the job to be executed.
 Here's how it looks like:
 
-````
+{% highlight cmd %}
 @echo off
 
 set kitchen="D:\Pentaho\kettle\data-integration\kitchen.bat"
@@ -50,7 +50,7 @@ set job_name=%1
 set log="D:\Script\Spoon\log\"%2".log"
 
 %kitchen% /rep:%repository% /user:%repository_user% /pass:%repository_pass% /dir:%job_dir% /job:%job_name% /level:Basic >> %log%
-````
+{% endhighlight %}
 
 We can start a job very simply with the following command:
 
@@ -97,7 +97,7 @@ The main goal of the log table is to keep track of all tasks (jobs/transformatio
 
 The basic table structure is defined this way (in PostgreSQL syntax):
 
-````sql
+{% highlight sql %}
 create table log_updates (
   id serial primary key,
   data_esecuzione varchar(20),
@@ -111,7 +111,7 @@ create table log_updates (
   updated int
   unique (data_esecuzione, flagtipotabella, nometrasformazione)
 )
-````
+{% endhighlight %}
 
 and it will look like:
 
@@ -201,14 +201,14 @@ Here's how the *generate rows* step will look like:
 
 Here's a JavaScript step that will get the parameters from the outer job:
 
-````javascript
+{% highlight javascript %}
 var dtcaricamento = getVariable("data_caricamento","");
 var nometrasformazione = getVariable("nome_trasformazione","no");
 var flagtipotabella = getVariable("flag_tipotabella","no");
 var dtiniziocaricamento = new Date();
 var dtfinecaricamento;
 var esitocaricamento = 1
-````
+{% endhighlight %}
 
 and here's how the *Insert/Update* step will look like:
 
@@ -223,7 +223,7 @@ as a parameter (right click -> Edit job entry -> parameters).
 
 only the JavaScript code is different:
 
-````javascript
+{% highlight javascript %}
 var dtcaricamento = getVariable("data_caricamento","");
 var nometrasformazione = getVariable("nome_trasformazione","");
 var flagtipotabella = getVariable("flag_tipotabella","");
@@ -244,7 +244,7 @@ if (esitocaricamento == '0') {
 } else {
   dtfinecaricamento = null;
 }
-````
+{% endhighlight %}
 
 ## Transformation
 

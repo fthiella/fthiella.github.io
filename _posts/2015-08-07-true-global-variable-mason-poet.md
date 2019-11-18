@@ -36,21 +36,21 @@ and then let's do some coding!
 
 **Global Variable Example**
 
-````bash
+{% highlight bash %}
 # generate app Myapp
 poet new Myapp
 cd Myapp
-````
+{% endhighlight %}
 
 add a class `Myapp::Import`, here's where we have to define our global variables:
 
-````bash
+{% highlight bash %}
 vi lib/Myapp/Import.pm
-````
+{% endhighlight %}
 
 and then let's add some code:
 
-````perl
+{% highlight perl %}
 package Myapp::Import;
 use Poet::Moose;
 extends 'Poet::Import';
@@ -62,15 +62,15 @@ method provide_var_mytemp ($caller) {
     return $self->mytemp;
 }
 1;
-````
+{% endhighlight %}
 
 then we can test our global variable in our components, let's print its value on `comps/index.mc`:
 
-````perl
+{% highlight perl %}
 <%class>
 use Poet qw($mytemp);
 </%class>
 I got this <% $mytemp %> variable.
-````
+{% endhighlight %}
 
 Let's see how to store a database handler, on my next post!

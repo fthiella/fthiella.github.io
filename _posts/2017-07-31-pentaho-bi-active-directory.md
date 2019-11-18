@@ -8,9 +8,9 @@ This is a quick guide of how to integrate the Pentaho BI platform with Active Di
 
 The first file that has to be modified is `biserver-ce\security.properties` where we have to specify that we want to use LDAP authentication:
 
-````
+{% highlight bash %}
 provider=ldap
-````
+{% endhighlight %}
 
 Then we have to modifiy the file `biserver-ce\pentaho-solutions\system\applicationContext-security-ldap.properties` which has to be updated with the actual
 Active Directory parameters.
@@ -22,7 +22,7 @@ Active Directory parameters.
 
 This is how the file will look like:
 
-````
+{% highlight bash %}
 contextSource.providerUrl=ldap\://example.com\:389/DC\=example,DC\=com
 contextSource.userDn=CN\=browsingad,OU\=Example Users,DC\=example,DC\=com
 contextSource.password=password
@@ -47,17 +47,17 @@ allUsernamesSearch.searchFilter=(objectClass\=Person)
 
 adminRole=cn\=Pentaho Administrators,OU\=Pentaho Roles,OU\=Groups,OU\=Example Users
 adminUser=cn\=admin.user,OU\=IT Staff,OU\=Example Users
-````
+{% endhighlight %}
 
 Finally we can modify the file `\biserver-ce\pentaho-solutions\system\pentaho.xml` to hide test users:
 
-````html
+{% highlight html %}
 <login-show-users-list>false</login-show-users-list> 
 <login-show-sample-users-hint>false</login-show-sample-users-hint>
-````
+{% endhighlight %}
 
 and also our logo:
 
-````
+{% highlight html %}
 biserver-ce/pentaho-solutions/system/common-ui/resources/themes/images/puc-login-logo.png
-````
+{% endhighlight %}

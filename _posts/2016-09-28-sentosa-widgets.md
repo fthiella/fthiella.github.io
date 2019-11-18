@@ -10,7 +10,7 @@ Initially all the code for each object was inside a single component, but later 
 
 The first half just loads the object definition (query, or form) from the Sentosa database using the `Objects.pm` library:
 
-````perl
+{% highlight perl %}
 my ($obj, $columns) = Sentosa::Objects::get_recordSource({
     app => $._app,
     obj => $._id,
@@ -18,11 +18,11 @@ my ($obj, $columns) = Sentosa::Objects::get_recordSource({
     userid => $m->session->{auth_id}
 });
 if (!$obj) { $m->not_found(); }; # form not found
-````
+{% endhighlight %}
 
 and then calls the `query-widget.mi` component which renders the actual data (the JSON output of the query in this case):
 
-````perl
+{% highlight perl %}
  {
       app => $._app,
       id => $._id,
@@ -37,7 +37,7 @@ and then calls the `query-widget.mi` component which renders the actual data (th
       }
     }
 &>
-````
+{% endhighlight %}
 
 the reason is that I like a lot the components that render the data, but I don't like
 to read Sentosa components from a DB. I'm still undecided if the problem is just the

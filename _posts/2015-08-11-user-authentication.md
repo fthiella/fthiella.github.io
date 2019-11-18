@@ -14,18 +14,18 @@ how to make this code better (expecially the `UserSession` part).
 Users go to the af_users table, where the password is stored as clear text. Even if that's bad
 practice it's easy to fix and it's not the issue here... there are bigger problems!
 
-````sql
+{% highlight sql %}
 CREATE TABLE `af_users` (
-`id` integer primary key autoincrement,
-`username` varchar(200) NOT NULL,
-`password` varchar(200) NOT NULL
+  `id` integer primary key autoincrement,
+  `username` varchar(200) NOT NULL,
+  `password` varchar(200) NOT NULL
 );
-````
+{% endhighlight %}
 
 Then I'm creating a `Sentosa::Users` package that contains functions to manage users.
 At the moment it's like this:
 
-````perl
+{% highlight perl %}
 package Sentosa::Users;
 use Poet::Moose;
 extends 'Poet::Import';
@@ -33,24 +33,24 @@ extends 'Poet::Import';
 use Poet qw($dbh);
 
 sub auth_user {
- my ($u, $p) = @_;
- my $ar = $dbh->selectall_arrayref(
- "SELECT id, username, password
- FROM af_users
- WHERE username=? AND password=?",
- {Slice => {}},
- $u,
- $p
- );
+  my ($u, $p) = @_;
+  my $ar = $dbh->selectall_arrayref(
+    "SELECT id, username, password
+    FROM af_users
+    WHERE username=? AND password=?",
+    {Slice => {}},
+    $u,
+    $p
+  );
 
- if ($ar->[0]->{username} eq $u) {
- return $ar->[0]->{id};
- }
- return undef;
+  if ($ar->[0]->{username} eq $u) {
+    return $ar->[0]->{id};
+  }
+  return undef;
 }
 
 1;
-````
+{% endhighlight %}
 
 then I will add change password, groups managements, or other useful funcions.
 
@@ -60,17 +60,17 @@ Here's where I should do some improvements otherwise it's easy to hack cookies a
 
 Sessions goes in the `af_sessions` table:
 
-````sql
+{% highlight sql %}
 CREATE TABLE `af_sessions` (
- `id` INTEGER PRIMARY KEY AUTOINCREMENT,
- `auth_user_id` INTEGER,
- `auth_ts` timestamp DEFAULT CURRENT_TIMESTAMP
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `auth_user_id` INTEGER,
+  `auth_ts` timestamp DEFAULT CURRENT_TIMESTAMP
 );
-````
+{% endhighlight %}
 
 and the `Sentosa::UserSessions` package is like this:
 
-````perl
+{% highlight perl %}
 package Sentosa::UserSessions;
 use Poet::Moose;
 extends 'Poet::Import';
@@ -78,28 +78,28 @@ extends 'Poet::Import';
 use Poet qw($dbh);
 
 sub session_is_valid {
- my ( $sid ) = @_;
+  my ( $sid ) = @_;
 
-if (defined $sid) {
- my $ar = $dbh->selectall_arrayref("SELECT id, auth_user_id FROM af_sessions WHERE id=? AND auth_ts>=datetime('now', '-30 minute')", {Slice => {}}, $sid);
+  if (defined $sid) {
+    my $ar = $dbh->selectall_arrayref("SELECT id, auth_user_id FROM af_sessions WHERE id=? AND auth_ts>=datetime('now', '-30 minute')", {Slice => {}}, $sid);
 
-if ($ar->[0]->{id} eq $sid) {
- # TO DO: Big Warning - this is UNSAFE - need to perform some extra checks!
- return $ar->[0]->{auth_user_id};
- }
- }
- return undef;
+    if ($ar->[0]->{id} eq $sid) {
+      # TO DO: Big Warning - this is UNSAFE - need to perform some extra checks!
+      return $ar->[0]->{auth_user_id};
+    }
+  }
+  return undef;
 }
 
 sub add_session {
- my ($nid) = @_;
- my $sth = $dbh->prepare("INSERT INTO af_sessions (auth_user_id) VALUES (?)");
- $sth->execute($nid);
- return $dbh->last_insert_id("", "", "af_sessions", "id");
+  my ($nid) = @_;
+  my $sth = $dbh->prepare("INSERT INTO af_sessions (auth_user_id) VALUES (?)");
+  $sth->execute($nid);
+  return $dbh->last_insert_id("", "", "af_sessions", "id");
 }
 
 1;
-````
+{% endhighlight %}
 
 **Authentication: Base.mp**
 
@@ -111,7 +111,7 @@ is required) and if it is not expired. Here's the final code, but I know already
 some parts outside in a proper package:
 
 
-````perl
+{% highlight perl %}
 use Sentosa::Users;
 use Sentosa::UserSessions;
 
@@ -122,21 +122,21 @@ has 'authenticated_user';
 has 'title';
 
 method wrap() {
-if ($.username || $.password) {
-$.authenticated_user( Sentosa::Users::auth_user( $.username, $.password ) );
-if (defined $.authenticated_user) {
-$m->session->{auth_id} = Sentosa::UserSessions::add_session($.authenticated_user);
-} else {
-$.authenticated_user(undef);
-$m->session->{auth_id} = undef;
-}
-}
+  if ($.username || $.password) {
+    $.authenticated_user( Sentosa::Users::auth_user( $.username, $.password ) );
+    if (defined $.authenticated_user) {
+      $m->session->{auth_id} = Sentosa::UserSessions::add_session($.authenticated_user);
+    } else {
+      $.authenticated_user(undef);
+      $m->session->{auth_id} = undef;
+    }
+  }
 
-$.authenticated_user(Sentosa::UserSessions::session_is_valid($m->session->{auth_id}));
+  $.authenticated_user(Sentosa::UserSessions::session_is_valid($m->session->{auth_id}));
 
-inner();
+  inner();
 }
-````
+{% endhighlight %}
 
 Okay I'm not too proud of this code, I know it's not high quality, but at least I could move on and see my application working.
 I'll come back to this code at a later time.

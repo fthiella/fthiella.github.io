@@ -46,15 +46,15 @@ The logic is going to be like this:
 
 This is how I am going to call the function:
 
-````python
+{% highlight python %}
 if __name__ == '__main__':
 	print("\n".join(justify(["the", "quick", "brown", "fox",
 		"jumps", "over", "the", "lazy", "dog"], 16)))
-````
+{% endhighlight %}
 
 And this is how my `justify` function looks like:
 
-````python
+{% highlight python %}
 def justify(words, k):
 	res = []
 	current_length = 0
@@ -81,14 +81,14 @@ def justify(words, k):
 		res.append(justify_line(current_words, current_length, k))
 
 	return res
-````
+{% endhighlight %}
 
 The final part is handled by the `justify_line` function, that accept as input the array `w` of words that fits in the current line,
 the length `l` of the current words (not considering spaces), and the width of the like `k`.
 
 (`l` is not strictly necessary, I have all elements to calculate it inside the function, but since it's alreay available I'll just pass it to the function)
 
-````python
+{% highlight python %}
 def justify_line(w, l, k):
 	if len(w)==1:
 		return w[0].ljust(k)
@@ -98,7 +98,7 @@ def justify_line(w, l, k):
 		ws = " " * (narrow_spaces + 1)
 
 		return ns.join([ws.join(w[0:wider_words+1]), *w[wider_words+1:]])
-````
+{% endhighlight %}
 
 - If the current line contains only one word then I'll just return this
   word left-justified with spaces at the right (as from the problem specs).
@@ -116,7 +116,7 @@ For example if I call `justify_line(['the', 'quick', 'brown'], 13, 16)`:
 
 To make things easier during developement, and to make sure that a little fix won't mess up everything, I wrote this testing unit:
 
-````python
+{% highlight python %}
 import unittest
 import re
 from justify_text import justify
@@ -150,7 +150,7 @@ class TestStringMethods(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-````
+{% endhighlight %}
 
 - test_given: the result of the function has to match the result from the problem specification
 - test_lengths: all strings have to be of length k (k from 1 to 80)

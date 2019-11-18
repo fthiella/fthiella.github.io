@@ -7,7 +7,7 @@ categories: perl
 
 I had to obtain the structure (name, type, and precision for every column) of a table, connected via JDBC using DBI, and this is how I did it:
 
-````perl
+{% highlight perl %}
 #!/usr/bin/perl
 
 use strict;
@@ -37,4 +37,4 @@ for (my $i=0; $i< $num_fields; $i++) {
  
 $qry->finish();
 $dbo->disconnect();
-````
+{% endhighlight %}

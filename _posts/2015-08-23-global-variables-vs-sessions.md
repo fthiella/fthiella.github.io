@@ -20,11 +20,11 @@ or to *Guest* otherwise.
 
 Since every component will implicitly extend Base.mp:
 
-````perl
+{% highlight perl %}
 <%flags>
   extends => "Base.mp"
 </%flags>
-````
+{% endhighlight %}
 
 I can be sure that every component will have the correct authenticated user set. Or not? Something I didn't expect happens here:
 
@@ -43,17 +43,17 @@ At the moment I can still go on with this approach, it's starting to get less el
 
 Lol, yes, but I'm still a little unsure on what other alternatives do I have:
 
-````perl
+{% highlight perl %}
 $m->notes("authenticated_user", "12345")
-````
+{% endhighlight %}
 
 ?
 
 It seems to have the same behavior on called components, but it turns out that I just can use.... sessions!
 
-````perl
+{% highlight perl %}
 $m->session->{auth_id} = $auth_id;
 $m->req->{env}->{'psgix.session.options'}->{expires} = "+1h";
-````
+{% endhighlight %}
 
 Some things I have to implement: the timeout, and making a session expire immediately. But I didn't have to reinvent the wheel like I was doing before hehe, plack sessions have ad ID stored on the server, and that's enough at the moment!

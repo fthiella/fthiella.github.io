@@ -17,9 +17,9 @@ I wanted to connect to an Oracle database, but I got the following message error
 
 I quicly checked my server and the `oci8.so` library wasn't available:
 
-````bash
+{% highlight bash %}
 find / -name oci8.so 2>&1 | grep -v "Permission denied"
-````
+{% endhighlight %}
 
 so here's how I proceeded:
 
@@ -30,10 +30,8 @@ so here's how I proceeded:
 
 Once the webserver is restarted, I can access an Oracle instance. I can use a service string like this:
 
-````
-
+{% highlight bash %}
 (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = host)(PORT = 1521))) (CONNECT_DATA = (SERVICE_NAME = service)))
-
-````
+{% endhighlight %}
 
 without having to set the connection on the `tnsnames.ora` file. Adminer works great also on Oracle databases!

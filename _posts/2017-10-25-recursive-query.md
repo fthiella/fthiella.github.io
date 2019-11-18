@@ -19,16 +19,16 @@ Users can ask to transfer an existing booking to a new date, so we just create a
 
 This makes things easy whenever we want to find all active bookings:
 
-````sql
+{% highlight sql %}
 select various_info, appointment_date
 from   appointments
 where  status = 'B'
 ;
-````
+{% endhighlight %}
 
 but to find when a booking was booked for the first time we need a recursive query. We start with this:
 
-````sql
+{% highlight sql %}
 WITH RECURSIVE recursive_bookings AS (
   /* non recursive/root part: get all active bookings */
 select
@@ -51,7 +51,7 @@ from
 )
 select * from recursive_bookings
 ;
-````
+{% endhighlight %}
 
 this query on the dataset above will return the following rows:
 
@@ -68,7 +68,7 @@ and there might be many others in case the same booking is transferred multiple 
 
 If we want to get the first time an appointment was booked we have to only get the row per each last_id
 
-````sql
+{% highlight sql %}
 select s.id as first_id, s.last_id
 from (
   select id, last_id, level, max(level) OVER (PARTITION BY last_id) AS maxlevel FROM recursive_bookings
@@ -76,15 +76,15 @@ from (
 where
   (s.level = s.maxlevel)
 ;
-````
+{% endhighlight %}
 
 then we can play around this query and return other columns we might be interested in.
 
 I have also one additional column which stores the reason why the appointment was transferred, and it's stored on the row which is transferred. The reason can be either C = the company had to transfer the appointment, because the slot
 was no longer available or U = the user wanted to transfer the appointment. If I want to ignore the transfers caused by the user, I'll have to add this condition to the join:
 
-````sql
+{% highlight sql %}
 recursive_bookings r join bookings a on a.next_id = r.id and a.status='T' and a.reason='C'
-````
+{% endhighlight %}
 
 this will ignore all transfers caused by the user (and all transfers caused by the company but before user intervention, which might be desiderable or might not, but this depends on what the requirements are).

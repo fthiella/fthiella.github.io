@@ -19,17 +19,17 @@ I might rename it to Sentosa::SQL as I might reuse it on other projects as well.
 
 You need to define a $columns array reference as the following:
 
-````perl
+{% highlight perl %}
 my $columns = [
   { col => 'id', 'pk' => 1},
   { col => 'name'},
   { col => 'surname'}
 ];
-````
+{% endhighlight %}
 
 where id is the primary key, and then you have to call `selectQuery` and get a hash reference like this:
 
-````sql
+{% highlight sql %}
 my $q = Sentosa::Db::selectQuery(
   'mytable',
   $columns,
@@ -39,11 +39,11 @@ my $q = Sentosa::Db::selectQuery(
   10, #number of records
   'SQLite'
 );
-````
+{% endhighlight %}
 
 this will return three queries and three array references like below:
 
-````perl
+{% highlight perl %}
   print $q->{query}, "\n";
   print "(".join(',', @{$q->{query_data}}).")\n";
 
@@ -52,7 +52,7 @@ this will return three queries and three array references like below:
 
   print $q->{query_limit}, "\n";
   print "(".join(',', @{$q->{query_limit_data}}).")\n";
-````
+{% endhighlight %}
 
 yes I could just call the same function thrice with different parameters (that would make the library even more elegant),
 but at the moment I have good reasons to call it once, but I might change my mind in a near future.
@@ -71,8 +71,9 @@ but the user can search for some records within the already filtered table.
 
 For example, many users could have records in the same table:
 
+
 ID | User | Song
----+------+---------------------------------
+---|------|---------------------------------
 1  | 1    | AC-DC - Ride On.mp3
 2  | 1    | Metallica - Enter Sandman.mp3
 3  | 2    | The Sweet - Action.mp3
@@ -81,10 +82,10 @@ ID | User | Song
 
 We can filter the previous table for each user, then the user can apply an additional filter:
 
-````perl
+{% highlight perl %}
 my $columns = [
   { col => 'id', 'pk' => 1},
   { col => 'user', 'filter' => 1},
   { col => 'song', 'search' => 'Metallica', 'searchcriteria' => 'SUB'}
 ];
-````
+{% endhighlight %}
