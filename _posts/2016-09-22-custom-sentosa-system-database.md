@@ -5,9 +5,10 @@ date:   2016-09-22 12:00:00 +0200
 categories: perl markdown sql
 ---
 
-Sentosa Autoforms by default stores all of its users, settings and objects in a local SQLite database. The default connection is defined in `lib\Sentosa\Import.pm` module:
+Sentosa Autoforms by default stores all of its users, settings and objects in a local SQLite database.
+The default connection is defined in `lib\Sentosa\Import.pm` module:
 
-````perl
+{% highlight perl %}
 package Sentosa::Import;
 use Poet::Moose;
 extends 'Poet::Import';
@@ -24,12 +25,12 @@ method provide_var_dbh ($caller) {
 }
 
 1;
-````
+{% endhighlight %}
 
 this module provides a shared variable `$dbh` that contains an active DBI handler to the standard SQLite database,
 you can however modify it in order to use any other database. This is what I use for PostgreSQL:
 
-````perl
+{% highlight perl %}
 package Sentosa::Import;
 use Poet::Moose;
 extends 'Poet::Import';
@@ -49,11 +50,11 @@ method provide_var_dbh ($caller) {
 }
 
 1;
-````
+{% endhighlight %}
 
 Since I stored Sentosa tables into a PostgreSQL schema called `sentosa` I had to modify
 a little the previous module in order to use the correct schema:
 
-````sql
+{% highlight sql %}
 SET search_path TO sentosa
-````
+{% endhighlight %}

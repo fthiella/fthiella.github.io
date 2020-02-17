@@ -22,7 +22,7 @@ Yes I know this is a little off topic from Mason and Sentosa, but this tool is w
 
 Make sure you have installed `perl`, `File::Slurp`, `Getopt::Long`, `DBI`, and the `DBD` libraries for your database:
 
-````bash
+{% highlight bash %}
 cpanm File::Slurp
 cpanm Getopt::Long
 cpanm DBI
@@ -30,13 +30,13 @@ cpanm DBD::SQLite
 cpanm DBD::Pg
 cpanm DBD::mysql
 ...
-````
+{% endhighlight %}
 
 ## Run a query
 
 Once everything is installed, you can write a single query, or more queries separated by a `;` in a `.SQL` text file:
 
-````sql
+{% highlight sql %}
 drop table if exists gardens;
 
 create table gardens (
@@ -51,13 +51,13 @@ insert into gardens (name, city) values
 ('Princes Street Gardens','Edinburgh');
 
 select * from gardens;
-````
+{% endhighlight %}
 
 and you can run your query file at the command line:
 
-````bash
+{% highlight bash %}
 perl sqlbuild.pl -c dbi:SQLite:dbname=test.sqlite3 -s query.sql
-````
+{% endhighlight %}
 
 the connection string is in the DBI format, this example is for SQLite so we don't need to specify a username or a password.
 
@@ -81,13 +81,13 @@ If some columns become too big, you can specify the maximum size of a column wit
 
 Instead of using the command line, you can also specify all connection strings, usernames, passwords inside the .SQL file itself:
 
-````sql
+{% highlight sql %}
 /*
   conn="dbi:SQLite:dbname=test.sqlite3"
   username=""
   password=""
 */
-````
+{% endhighlight %}
 
 This is very handy but not too secure (other users might peek inside your files, and also updating a password might become complicated).
 
@@ -97,7 +97,7 @@ This is for Windows, but Linux and OSX will be very similar.
 
 Just get the provided file Sql-mk-build.sublime-build, update the working_dir:
 
-````perl
+````
 {
 	"cmd": ["perl", "sqlbuild.pl", "-s", "$file" ],
 	"working_dir": "c:\\GitHub\\Sql-mk-builder\\"
@@ -107,9 +107,9 @@ Just get the provided file Sql-mk-build.sublime-build, update the working_dir:
 
 and move it to the build directoy:
 
-````
+{% highlight cmd %}
 C:\Users\YOURUSERNAMEHERE\AppData\Roaming\Sublime Text 3\Packages\User
-````
+{% endhighlight %}
 
 then you can edit your .SQL files with Sublime Text, and see the results using CTRL+B.
 

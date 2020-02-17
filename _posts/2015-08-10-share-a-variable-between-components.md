@@ -6,7 +6,8 @@ categories: mason perl learningmason
 ---
 On my previous posts we saw how to to create and use true global variables. Their usage is limited to `$dbh` at the moment. But I also need a "global" variable, shared between all components of the same request. Here's one of my first tries, and this is how the `Base.mc` will look like:
 
-````perl
+{% highlight perl %}
+{% raw %}
 has 'title';
 has 'authenticated_user';
 
@@ -26,20 +27,24 @@ has 'authenticated_user';
   $.authenticated_user('Admin');
 </%init>
 </%augment>
-````
+{% endraw %}
+{% endhighlight %}
 
 and this is the `index.mc`:
 
-````perl
+{% highlight perl %}
+{% raw %}
 Welcome, <% $.authenticated_user %>
 <%init>
 $.title("Welcome to Sentosa");
 </%init>
-````
+{% endraw %}
+{% endhighlight %}
 
 I think I will use `Base.mp` and here's what I'm going to do:
 
-````perl
+{% highlight perl %}
+{% raw %}
 has 'authenticated_user';
 has 'title';
 
@@ -47,6 +52,7 @@ method wrap() {
  $.authenticated_user ("Superuser");
  inner();
 }
-````
+{% endraw %}
+{% endhighlight %}
 
 Next, how do I actually authenticate my users? See it on my next post!

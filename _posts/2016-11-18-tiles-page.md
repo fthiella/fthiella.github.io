@@ -17,7 +17,7 @@ so this was the right moment to start developing one!
 
 A tiles page is implemented like an unordered list:
 
-````html
+{% highlight html %}
 <ul class="tiles">
   <li class="blue high long">
     <a href="pazienti_cot">
@@ -29,7 +29,7 @@ A tiles page is implemented like an unordered list:
     ...
   </li>
 </ul>
-````
+{% endhighlight %}
 
 I just added a `data-ajax-source` data column on the `ui` tag
 (here's where we will fetch the counts) and a `data-value`
@@ -37,7 +37,7 @@ that specifies the row where to get the counts. The AJAX data source
 will be in the same format as a datatables data source (because I'm lazy and
 I can reuse the same module hehe):
 
-````javascript
+{% highlight javascript %}
 {
     "aaData":[
       ["PAZIENTI","1021"],
@@ -54,10 +54,11 @@ I can reuse the same module hehe):
     "iTotalDisplayRecords":"9",
     "sEcho":null
 }
-````
+{% endhighlight %}
+
 The tiles widget will be called as this:
 
-````
+{% highlight perl %}
   tiles-widget.mi,
     tiles => {
       json => "json/riepilogo.json",
@@ -73,10 +74,10 @@ The tiles widget will be called as this:
         { caption => 'Letti Disponibili',   value => 'LETTI',             class => 'lightred long',  href => 'letti_cot' },
       ]
     }
-````
+{% endhighlight %}
 that will create a tiles html structure like the one above:
 
-````
+{% highlight perl %}
             <ul class="tiles" data-ajax-source="{json} %>">
 % foreach my $box (@{$.tiles->{columns}}) {
                <li class="{class} %>" data-value="{value} %>">
@@ -87,11 +88,11 @@ that will create a tiles html structure like the one above:
               </li>
 % }
             </ul>
-````
+{% endhighlight %}
 
 then the magic starts in the `sentosa.js` module:
 
-````javascript
+{% highlight javascript %}
 function init_tile(tile) {
     $.getJSON( tile.attr("data-ajax-source"), function( data ) {
         // create an hash from the json aaData
@@ -107,20 +108,20 @@ function init_tile(tile) {
         });
     });
 }
-````
+{% endhighlight %}
 
 okay, this "init" will load the JSON, parse it in a map data structure, then loop through
 each `li` element and put the value accordingly to the `data-value` tag (or put the `-` symbol
 if not available). I will then call it every some seconds:
 
-````javascript
+{% highlight javascript %}
 setInterval (function autoRefresh() {
     /* refresh all tiles */
     $('ul[data-ajax-source]').each(function () {
         init_tile($(this));
     });
 }, 30000);
-````
+{% endhighlight %}
 
 This link looks interesting if I want to build a more professional and reusable plugin:
 [Basic Plugin Creation](https://learn.jquery.com/plugins/basic-plugin-creation/)

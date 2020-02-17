@@ -7,9 +7,9 @@ categories: mason perl learningmason
 
 Good news about Mason2 is that it can be easily installed using `cpanm`:
 
-````bash
+{% highlight cmd %}
 cpanm -S --notest Poet
-````
+{% endhighlight %}
 
 And good news is that nowadays is pretty easy to install it on the Windows platform as well.
 While my production servers are always Linux, I just switched back from Mac to Windows for my
@@ -27,7 +27,7 @@ I'm also using Sublime Text editor, which has become my favourite editor, and wi
 
 Don't forget to install `cpanminus` (with the provided ppm ... Perl Package Manager) it will be very handy at a later time. Now we can test our environment:
 
-````bash
+{% highlight cmd %}
 C:\Users\fede\code>poet new test
 test/.poet_root
 test/bin/app.psgi
@@ -37,15 +37,15 @@ test/bin/run.pl
 ...
 
 Now run 'test/bin/run.pl' to start your server.
-````bash
+{% endhighlight %}
 
 and we can run our server, in development mode:
 
-````bash
+{% highlight cmd %}
 C:\Users\fede\code>test\bin\run.pl
 Running plackup, -E, development, --port, 5000, -R, etc. etc.
 HTTP::Server::PSGI: Accepting connections at http://0:5000/
-````
+{% endhighlight %}
 
-Okay, we can now connect to http://localhost:5000 and see the wecome page.
+Okay, we can now connect to [http://localhost:5000](http://localhost:5000) and see the wecome page.
 Later on these pages how to run our application in a production server.

@@ -13,28 +13,28 @@ I wanted to add a service on my CentOS server and I wanted to manage it with Sys
 
 First I created a `/etc/systemd/system/sentosa.service` file that contains:
 
-````
+{% highlight bash %}
 [Unit]
 Description=Sentosa Autoforms
 After=network.target
 
 [Service]
 ExecStart=/usr/local/bin/plackup -E production --port 5001 --access-log /var/www/apps/sentosa/logs/access.log /var/www/apps/sentosa/bin/app.psgi
-````
+{% endhighlight %}
 
 the app.psgi is the standard file from GitHub, I just disabled the debug mode.
 
 
 Now I can start, restart, stop my service with:
 
-````bash
+{% highlight bash %}
 systemctl start sentosa.service
 systemctl restart sentosa.service
 systemctl stop sentosa.service
-````
+{% endhighlight %}
 
 And I can monitor the tail of the logs with:
 
-````bash
+{% highlight bash %}
 journalctl -u sentosa.service -f
-````
+{% endhighlight %}

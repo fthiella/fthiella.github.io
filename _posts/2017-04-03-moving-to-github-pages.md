@@ -33,7 +33,7 @@ and I am starting to use GitHub pages as my blogging platform.
 The default style is okay, but it can be improved. For example Markdown tables are correctly generated, but there's no CSS
 style associated to tables, so I just added to the `style.scss` file:
 
-````css
+{% highlight css %}
 table {
   padding: 0;
 }
@@ -67,7 +67,7 @@ table tr th :first-child, table tr td :first-child {
 table tr th :last-child, table tr td :last-child {
   margin-bottom: 0;
 }
-````
+{% endhighlight %}
 
 Having all articles sitting in my Hard Disk is great, I can use any text tool on them, like *grep* or I my own *SQL Markdown Builder*.
 

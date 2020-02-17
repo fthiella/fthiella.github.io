@@ -7,21 +7,24 @@ categories: perl mason
 Mason comes with some built-in filters that can be used to process portions of content in a component.
 The standard way to invoke a filter is in a block:
 
+{% highlight perl %}
     % $.Trim \{\{
         This string will be trimmed
     % \}\}
     # end Trim
+{% endhighlight %}
 
 but filters can appear also inside a `<% %>` tag:
 
-````perl
+
+{% highlight perl %}
 <% $content | NoBlankLines,Trim %>
-````
+{% endhighlight %}
 
 More details can be found at the official [Mason::Manual::Filters](https://metacpan.org/pod/distribution/Mason/lib/Mason/Manual/Filters.pod) page.
 Here's how to create a custom filter:
 
-````perl
+{% highlight perl %}
 package MyApp::Filters;
 use Mason::PluginRole;
     
@@ -34,12 +37,13 @@ method Lower () {
 }
     
 1;
-````
+{% endhighlight %}
 
 I wanted to use a custom filter that converts Markdown text to HTML, so I installed the [Text::Multimarkdown](https://metacpan.org/module/Text::MultiMarkdown)
 module and I created a filter like this:
 
-````perl
+
+{% highlight perl %}
 package MyApp::Filters;
 use Mason::PluginRole;
 use Text::MultiMarkdown qw(markdown);
@@ -50,10 +54,11 @@ method Markdown () {
 }
 
 1;
-````
+{% endhighlight %}
 which I put in `lib/MyApp` directory. Then I tried it in a `index.mc` page:
 
-````
+
+{% highlight perl %}
 <%class>
   with 'Markdown::Filters';
 </%class>
@@ -69,11 +74,12 @@ This page is written using **markdown** syntax:
 - `Mason2` is great!
 " | Markdown
 %>
-````
+{% endhighlight %}
 
 another way using the block invocation syntax:
 
-````
+
+{% highlight perl %}
 <%class>
   with 'Markdown::Filters';
 </%class>
@@ -91,11 +97,12 @@ id | description
 
 yes `MultiMarkdown` supports tables as well.
 % \}\}
-````
+{% endhighlight %}
 
 one more way is to use a Base component, telling to process all inner components with Markdown:
 
-````perl
+
+{% highlight perl %}
 <%class>
   with 'Markdown::Filters';
 </%class>
@@ -113,11 +120,12 @@ one more way is to use a Base component, telling to process all inner components
     </body>
   </html>
 </%augment>
-````
+{% endhighlight %}
 
 then your page can contain just Markdown syntax, here's an `index.mc` example page (an empy line at the beginning seems to be needed here):
 
-````perl
+
+{% highlight perl %}
 
 
 # Only Markdown
@@ -129,4 +137,4 @@ This page will only contain Markdown syntax, but it will be converted to HTML:
 % }
 
 yes you can still use perl code on it!
-````
+{% endhighlight %}

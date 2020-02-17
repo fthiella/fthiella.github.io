@@ -9,15 +9,15 @@ I'm using SQLite but it can be changed at a later time to MySQL or Postgresql.
 
 Let's create my new project:
 
-````bash
+{% highlight bash %}
 poet new Sentosa
 
 cd Sentosa
-````
+{% endhighlight %}
 
 and let's create our SQLite database. The schema goes on the <code>db/schema.sql</code> file:
 
-````sql
+{% highlight sql %}
 create table if not exists af_info (
       id integer primary key autoincrement,
       attribute string not null,
@@ -27,17 +27,18 @@ create table if not exists af_info (
 insert into af_info (attribute, value) values
 ('name', 'Sentosa AutoForms'),
 ('version', '0.01');
-````
+{% endhighlight %}
 
 and the actual database data goes to `data/sentosa.db`:
 
-````bash
+{% highlight bash %}
 sqlite3 -batch data/sentosa.db < db/schema.sql
-````
+{% endhighlight %}
 
 This is how I would access this DB with a standard Perl application (using the DBI module):
 
-````perl
+{% highlight perl %}
+{% raw %}
 #!/usr/bin/perl
 
 use strict;
@@ -61,11 +62,13 @@ print "\n";
 
 $sth->finish();
 $dbh->disconnect();
-````
+{% endraw %}
+{% endhighlight %}
 
 and this is how I am connecting to it in my web application:
 
-````perl
+{% highlight perl %}
+{% raw %}
 package Sentosa::Import;
 use Poet::Moose;
 extends 'Poet::Import';
@@ -81,11 +84,13 @@ method provide_var_dbh ($caller) {
   ) or die $DBI::errstr;
 }
 1;
-````
+{% endraw %}
+{% endhighlight %}
 
 and this is how I'm using it on my component `index.mc`:
 
-````perl
+{% highlight perl %}
+{% raw %}
 <%class>
 use Poet qw($dbh);
 </%class>
@@ -98,4 +103,5 @@ my $name = $sth->fetch();
 
 $.title("Welcome to @$name");
 </%init>
-````
+{% endraw %}
+{% endhighlight %}

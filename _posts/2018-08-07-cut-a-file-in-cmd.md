@@ -9,35 +9,34 @@ world, without any particular utility.
 
 In linux it would be rather simple, thanks to the *cut* command:
 
-````bash
+{% highlight bash %}
 $ cut -c -10 example.txt
-
-````
+{% endhighlight %}
 
 On my windows machines there's always *Perl* available, and one alternative solution would be using one liner substitution:
 
-````cmd
+{% highlight cmd %}
 perl -pe s/(.{10}).*/$1/ example.txt
-````
+{% endhighlight %}
 
 but on my colleagues machines there are no particular utilities installed, so I had to create the following script:
 
-````cmd
+{% highlight cmd %}
 @echo off
 setlocal EnableDelayedExpansion
 for /f "delims=" %%r in (example.txt) do (
 	set s=%%r
 	echo !s:~0,10!
 )
-````
+{% endhighlight %}
 
 it's still possible to use a single line command, without the need of a `.cmd` script, but firts we have to launch
 the prompt with a special parameter `cmd /v` which indicates that [delayed expansion](https://ss64.com/nt/delayedexpansion.html) is enabled (it is disabled by default
 to be compatible with MS-DOS 2.0 batch files!). After we launch `cmd /v` the command becomes:
 
-````cmd
+{% highlight cmd %}
 for /f "delims=" %r in (example.txt) do @(set s=%r && echo !s:~0,10!)
-````
+{% endhighlight %}
 
 not really intuitive, is it? I think I am missing my teenager days when I used to program Assembly x86: that was complex,
 but for good reasons. Cmd scripting is still complicated, but for no knowns reasons! Also, please note that this solution is painfully slow.
