@@ -47,11 +47,11 @@ Per visualizzare gli strumenti per sviluppatori è necessario abilitare il relat
 A questo punto è disponibile il menù attraverso il quale sarà possono aggiungere dei controlli
 direttamente nel testo del documento:
 
-![Menù sviluppatore]({{ site.baseurl }}/images/consenso_sviluppatore.png)
+![Menù sviluppatore]({{ site.baseurl }}/images/consenso_sviluppatore.PNG)
 
 e tramite il pulsante proprietà andiamo ad assegnare un nome ad ogni controllo:
 
-![Proprietà controllo]({{ site.baseurl }}/images/consenso_word.png)
+![Proprietà controllo]({{ site.baseurl }}/images/consenso_word.PNG)
 
 tramite codice VBA andremo a leggere i dati dalla WEB API ed a caricare il risultato
 in ogni singolo controllo.
