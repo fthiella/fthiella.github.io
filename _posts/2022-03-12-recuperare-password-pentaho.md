@@ -24,7 +24,7 @@ from
 
 ## Recupero password Offuscate
 
-Le password offuscate sono precedute dalla stringa `Encrypted`. Se prendiamo come esempio la password `prova`, questà verrà salvata in tabella con la stringa `Encrypted 2be98afc86aa7f2e4cb79ce60cc9db9db`.
+Le password offuscate sono precedute dalla stringa `Encrypted`. Se prendiamo come esempio la password `prova`, questa verrà salvata in tabella con la stringa `Encrypted 2be98afc86aa7f2e4cb79ce60cc9db9db`.
 
 Quale metodo viene utilizzato per codificare e decodificare le password? Pentaho utilizza la libreria `Encr.java` che richiama diverse funzioni presenti in `KettleTwoWayPasswordEncoder.java`. 
 
@@ -32,7 +32,7 @@ Un sistema per decifrare la password è dimostrato nella trasformazione [Pentaho
 integrare la libreria Java che gestisce l'offuscamento delle password all'interno di una trasformazione,
 importanto la libreria e definendo la funzione da richiamare:
 
-````Java
+````java
 import org.pentaho.di.core.encryption.Encr;
 Encr.decryptPassword(encrypted_password)
 ````
@@ -41,7 +41,7 @@ Tuttavia non è strettamente necessario utilizzare questo sistema.
 
 Facendo una breve analisi del codice sorgente, si riesce facilmente ad individuare la logica del funzionamento, ovvero la definizione di una chiave "segreta":
 
-````Java
+````java
 public KettleTwoWayPasswordEncoder() {
     String envSeed = Const.NVL( EnvUtil.getSystemProperty( Const.KETTLE_TWO_WAY_PASSWORD_ENCODER_SEED ), "0933910847463829827159347601486730416058" ); // Solve for PDI-16512
     Seed = envSeed;
@@ -53,7 +53,7 @@ oppure al valore fisso `0933910847463829827159347601486730416058`)
 
 e l'algoritmo di codifica/decodifica che, senza sorpresa, avviene semplicemente tramite OR esclusivo. Il codice che decifra la password, semplificando al massimo e togliendo diversi controlli, è sostanzialmente questo:
 
-````Java
+````java
 import java.math.BigInteger;
 
 public class Main
