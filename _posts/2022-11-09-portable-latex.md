@@ -4,13 +4,14 @@ title: "Portable LaTex"
 date: 2022-11-09 22:40:00 +0200
 categories: latex
 ---
-Dato che ho l'esigenza di creare diversi documenti in formato LaTex
-nella mia macchina Windows 11. Esistono varie soluzioni disponibili,
-ma mi è sembrato che la versione [MikTex](https://miktex.org/)
-fosse la più vicina alle mie esigenze.
+Dato che ho l'esigenza di creare dei documenti LaTex sulla mia macchina Windows 11, ho
+verificato quali soluzioni siano possibili.
 
-Tra l'altro si trova disponibile anche in versione Portable che ho deciso
-di installare sotto la mia cartella usuale:
+Esiste un'ampia scelta di possibilità ma dato che il mio utilizzo sarà saltuario, ho
+ritenuto che la versione [MikTex](https://miktex.org/) fosse la più vicina alle mie esigenze,
+soprattutto per il fatto che si trova disponibile anche in versione Portable.
+
+Ho quindi deciso di installarla sotto la mia cartella usuale per i software portable:
 
      c:\Users\[username]\Documents\sw\
 
