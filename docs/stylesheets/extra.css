@@ -1,0 +1,38 @@
+/* ============================================
+   TEMA CHIARO (default)
+   ============================================ */
+:root > *,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #d4a373;
+  --md-primary-fg-color--light: #e0b894;
+  --md-primary-fg-color--dark: #b88a5e;
+  --md-accent-fg-color: #c96b7a;
+  --md-accent-fg-color--light: #d98a96;
+  --md-accent-fg-color--dark: #a85462;
+  --md-default-bg-color: #faf6f0;
+  --md-default-fg-color: #3d2e2a;
+  --md-default-fg-color--light: #6b5b55;
+  --md-code-bg-color: #f0ebe4;
+  --md-code-fg-color: #3d2e2a;
+  --md-typeset-table-color: #d4c5b8;
+  --md-typeset-a-color: #b88a5e;
+}
+
+/* ============================================
+   TEMA SCURO (slate)
+   ============================================ */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #d4a373;
+  --md-primary-fg-color--light: #e0b894;
+  --md-primary-fg-color--dark: #b88a5e;
+  --md-accent-fg-color: #c96b7a;
+  --md-accent-fg-color--light: #d98a96;
+  --md-accent-fg-color--dark: #a85462;
+  --md-default-bg-color: #1a1416;
+  --md-default-fg-color: #e6bfa8;
+  --md-default-fg-color--light: #b8a594;
+  --md-code-bg-color: #120e10;
+  --md-code-fg-color: #e6bfa8;
+  --md-typeset-table-color: #3d2e2a;
+  --md-typeset-a-color: #d4a373;
+}
