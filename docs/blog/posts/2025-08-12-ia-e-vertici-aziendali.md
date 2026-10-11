@@ -1,9 +1,11 @@
 ---
-title: "L'IA sostituirà anche i vertici aziendali?"
+title: L'IA sostituirà anche i vertici aziendali?
 date: 2025-08-12
-categories: [ai]
+categories:
+  - ai
+  - lavoro
 legacy: true
-source: "Commento su un blog, 2025"
+source: Commento su un blog, 2025
 ---
 
 > Commento del 2025 su un blog, in risposta a un post

@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "True Global Variable for Mason in Poet"
+title: True Global Variable for Mason in Poet
 date: 2015-08-07
-categories: [mason, perl, learningmason]
+categories:
+  - mason
+  - perl
 ---
 A few days ago, while I was roaming around Singapore, I offered a bounty (twice)
 on an already existing question on StackOverflow [Global Variable mason2 in Poet](http://stackoverflow.com/questions/28281187/global-variable-mason2-in-poet)

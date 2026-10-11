@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "Global variable $dbh"
+title: Global variable $dbh
 date: 2015-08-09
-categories: [mason, perl, learningmason]
+categories:
+  - mason
+  - perl
 ---
 The name of my project is "Sentosa AutoForms", and it is going to be driven by a SQL database.
 I'm using SQLite but it can be changed at a later time to MySQL or Postgresql.

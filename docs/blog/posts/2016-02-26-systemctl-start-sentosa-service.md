@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "Systemctl start sentosa.service"
+title: Systemctl start sentosa.service
 date: 2016-02-26
-categories: [mason, perl, learningmason]
+categories:
+  - mason
+  - perl
 ---
 
 I just started to publish my Sentosa web portal and users of my company are now starting to use it. Great!

@@ -1,20 +1,22 @@
 ---
 title: "MODRES: reverse engineering di un TSR audio negli anni '90"
 date: 2026-10-04
-categories: [retrocomputing, storia]
+categories:
+  - retrocomputing
+  - x86
 ---
 
 > MODRES era la libreria audio di MODEDIT, un tracker per MOD
 > molto diffuso in ambiente DOS. Non aveva documentazione
-> pubblica, l'ho quindi ricostruita con il Turbo Debugger ed
-> inviata a Ralf Brown, ed oggi nel 2026 tali voci sono ancora
+> pubblica, l'ho quindi ricostruita a suo tempo con il Turbo Debugger
+> ed inviata a Ralf Brown, ed oggi nel 2026 tali voci sono ancora
 > presenti nella Interrupt List.
 
 ## Cos'è MODRES
 
 MODRES era un programma per DOS di tipo TSR (*Terminate and Stay
 Resident*) che permetteva di riprodurre in background i moduli
-musicali in formato MOD, quelle a quattro tracce dei tracker Amiga.
+musicali in formato MOD quattro tracce dei tracker Amiga.
 
 Il suo uso principale era all'interno di **MODEDIT**: MODRES era la
 libreria audio che permetteva al tracker di ascoltare i moduli ed
@@ -278,4 +280,4 @@ Ralf Brown's Interrupt List, c'è questa riga:
 
     12/96 A Federico Thiella fthiella@stud32.math.unipd.it  MODRES
 
-Dicembre 1996. Università di Padova. MODRES.
+Dicembre 1996. Non ho più quella casella di posta ovviamente!

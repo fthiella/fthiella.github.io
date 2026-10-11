@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "DB.pm Library"
+title: DB.pm Library
 date: 2015-12-12
-categories: [mason, perl, learningmason]
+categories:
+  - mason
+  - perl
 ---
 Hello, I'm finally back! Yes not much posts lately, but lots of coding - it's a lot considering
 that I'm working full time and that this is only a side project on my spare time.

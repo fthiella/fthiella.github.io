@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "Daily coding problem #28: Write an algorithm to justify text"
+title: "Daily coding problem #28: Write an algorithm to justify text"
 date: 2019-02-13
-categories: [python, daily, coding, problem]
+categories:
+  - python
+  - coding
 ---
 Problem:
 

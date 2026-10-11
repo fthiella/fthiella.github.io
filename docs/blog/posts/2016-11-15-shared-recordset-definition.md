@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "Shared Recordset Definition"
+title: Shared Recordset Definition
 date: 2016-11-15
-categories: [mason, perl, learningmason]
+categories:
+  - mason
+  - perl
 ---
 I think that the modules I developed for Sentosa Autoforms are quite elegant and flexible (expecially the Sentosa::SQL module, and the DataDatables and JSON modules) so I decided to reuse them! However I don't like the fact that Sentosa Autoforms is all driven by database data.. while it's sometimes very convenient, I don't like the layer of complexity that it adds.
 

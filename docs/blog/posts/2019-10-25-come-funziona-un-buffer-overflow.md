@@ -1,9 +1,12 @@
 ---
-title: "Come funziona un buffer overflow"
+title: Come funziona un buffer overflow
 date: 2019-10-25
-categories: [sicurezza, programmazione, asm]
+categories:
+  - sicurezza
+  - programmazione
+  - x86
 legacy: true
-source: "Commenti su un blog, 25 ottobre 2019"
+source: Commenti su un blog, 25 ottobre 2019
 ---
 
 > Commenti del 25 ottobre 2019 su un blog, in una discussione sulla

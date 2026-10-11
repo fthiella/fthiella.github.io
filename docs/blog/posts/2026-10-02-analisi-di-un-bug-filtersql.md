@@ -8,10 +8,10 @@ categories: [python, filtersql]
 # filtersql v1.2.6: il bug banale che ha rivelato un abisso architetturale
 
 Quando ho pubblicato la versione 1.2.6 di `filtersql` ero convinto di aver raggiunto
-un buon standard di sicurezza. Poi, puntuale come un ordigno svizzero, è
-saltato fuori un nuovo bug. 
+un buon livello di sicurezza. Poi, puntuale come un ordigno svizzero, è
+saltato fuori un nuovo bug.
 
-Era la classica svista minuscola, la riga di codice ignorante che guardi e pensi
+Era la classica svista minuscola, la riga di codice che guardi e pensi
 di risolvere in pochi minuti.
 
 Ma quando ho messo le mani nella correzione mi sono reso conto che la patch banale risolveva
@@ -71,7 +71,7 @@ facilmente.
 
 Se una colonna appartiene allo `scope`, deve essere vietata nei campi di `insert` o `update`. 
 
-Facile come bere un bicchiere d'acqua passeggiando nel parco.
+Facile come bere una bottiglia d'acqua.
 
 ---
 
@@ -83,7 +83,7 @@ ed ecco che l'ingranaggio salta.
 Se lo `scope` protegge la colonna `"tenant_id"` e un client invia in scrittura la chiave `"tenant_id "` (con uno spazio in fondo), cosa succede?
 
 1. purtroppo il controllo dei conflitti confrontava immediatamente le due stringhe grezze: `"tenant_id"` contro `"tenant_id "`;
-2. le stringhe risultavano **diverse** ed il controllo dava l'avanti popolo;
+2. le stringhe risultavano **diverse** ed il controllo dava il via libera;
 3. solo successivamente, la funzione di quoting sanificava l'identificatore applicando il `trim()`.
 4. risultato: la query veniva compilata ed eseguita modificando proprio `tenant_id`!
 
