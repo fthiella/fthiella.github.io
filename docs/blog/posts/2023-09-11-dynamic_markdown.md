@@ -4,7 +4,6 @@ title: "Dynamic Markdown"
 date: 2023-09-11
 categories: [markdown]
 ---
-
 Markdown è un sistema di markup che può essere utilizzato per aggiungere elementi di formattazione a
 dei normali file di testo. È molto apprezzato dagli sviluppatori, e non a caso è il sistema di riferimento
 per [GitHub](https://github.com/) oppure per [StackOverflow](https://stackoverflow.com/) ma può essere
@@ -15,20 +14,23 @@ Uno strumento indispensabile per lavorare, tra le altre cose, su documenti markd
 Può essere infatti utilizzato per convertire documenti markdown in documenti Word, Open Office, LaTeX, PDF, etc.
 
 Ad esempio:
-
-    pandoc test.md -s -o test.odt
-
+```console
+pandoc test.md -s -o test.odt
+```
 oppure:
 
-    pandoc test.md -s -o test.pdf
+```console
+pandoc test.md -s -o test.pdf
+```
 
 (necessario aver installato pdflatex, come ad es. portable MikTex, e configurato il `PATH` in maniera adeguata).
 
 È possibile inoltre applicare dei template di alta qualità, come il
 [template Eisvogel](https://github.com/Wandmalfarbe/pandoc-latex-template)
 
-    pandoc test.md -s -o test.pdf --template eisvogel
-
+```console
+pandoc test.md -s -o test.pdf --template eisvogel
+```
 ## Markdown Dinamico
 
 Ho pensato che sarebbe estremamente comodo poter disporre di un documento markdown "dinamico". Ad esempio, per inserire
@@ -122,12 +124,11 @@ Inserisci una tabella:
    - mk.markdown_table che converte la tabella descritta da intestazione e righe in formato markdown.
 
 La compilazione del documento avviene in questo modo:
-
-    python pp.py -i documento.md | python | pandoc -o documento.pdf --template eisvogel.latex -s
-
+```console
+python pp.py -i documento.md | python | pandoc -o documento.pdf --template eisvogel.latex -s
+```
 (lo script dinamico e la libreria di utilities saranno pubblicate e descritte su GitHub quanto prima.
 Non si tratta di un sistema "professionale" ).
-
 ## Mako Templates
 
 Un'ultima opzione può essere il sistema [Mako Templates](https://www.makotemplates.org/),

@@ -29,7 +29,7 @@ Ho quindi voluto riorganizzare il servizio con il seguente sistema. La tabella c
 
 Questo task a sua volta si occupa di lanciare tutti gli script che devono essere eseguiti ogni ora, gestendone correttamente l'output stdout e stderr nei file di log opportuni:
 
-````sh
+````bash
 #!/bin/bash
 
 LOG_FILE=/var/log/covid_out.log
@@ -47,7 +47,7 @@ In questo caso i vari task vengono eseguiti in parallelo, ed ereditano gli outpu
 
 Tuttavia per ogni task voglio fare in modo che il log contenga la data e l'ora, ed il nome del task eseguito:
 
-````sh
+````bash
 #!/bin/bash
 PROGNAME=$(basename $0)
 
@@ -63,7 +63,7 @@ quando l'output è stato realizzato e che i vari output siano sequenziali.
 
 Inoltre per gestire correttamente eventuali errori, ho predisposto una funzione come segue:
 
-````sh
+````bash
 error_exit()
 {
         echo "${1:-"Unknown Error"}" 1>&2
@@ -73,7 +73,7 @@ error_exit()
 
 La struttura completa del task risulta essere questa:
 
-````sh
+````bash
 #!/bin/bash
 PROGNAME=$(basename $0)
 
@@ -96,14 +96,14 @@ perl "extract.pl" -extract > $output || error_exit "$LINENO: Errore estrazione d
 
 Come scaricare un file più recente da aws via cli:
 
-````sh
+```bash
 latest=`$AWS s3 ls s3://bucket/path/documento | sort | tail -1 | awk '{ print $4 }'`                   
 $AWS s3 cp --no-progress s3://bucket/path/$latest /home/fede/csv/documento.csv
 ````
 
 Per scaricare il file più recente da un altro unix, in questo caso utilizzando sshpass (da valutare ovviamente se è la soluzione opportuna):
 
-````sh
+````bash
 latest=$(sshpass -p $pass ssh fede@server 'ls -t /var/export/documento* | head -1')
 sshpass -p $pass scp fede@server:/$latest $output_dir/$output_file
 ````

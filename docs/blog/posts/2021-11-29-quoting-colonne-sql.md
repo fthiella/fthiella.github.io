@@ -5,7 +5,6 @@ categories: [sql, database]
 legacy: true
 source: "Commento su un blog"
 ---
-
 > Commento su un blog, in risposta a una discussione sui nomi
 > di colonna non convenzionali nei database.
 

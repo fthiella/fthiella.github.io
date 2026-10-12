@@ -19,19 +19,19 @@ tuttavia il nome della cartella Documents è configurabile e potrebbe essere sta
 per cui non si può dare per scontato che il percorso `%HOMEPROFILE%\Documents` sia sempre quello corretto.
 
 Il percorso corretto è registrato nella seguente posizione del registro di Windows:
+```console
+λ reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Personal
 
-    λ reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Personal
-    
-    HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
-        Personal    REG_SZ    C:\Users\username\Documents
-
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+Personal    REG_SZ    C:\Users\username\Documents
+```
 Alcuni linguaggi di programmazione mettono a disposizione librerie e funzioni apposite per interrogare il registro,
 mentre con la shell è necessario utilizzare uno script apposito.
 
 ## Script di lettura Percorso
 
 Il seguente script legge il percorso richiesto, e lo memorizza nella variabile `%value%`:
-
+```cmd
     @echo OFF
     setlocal ENABLEEXTENSIONS
     
@@ -42,5 +42,6 @@ Il seguente script legge il percorso richiesto, e lo memorizza nella variabile `
         set value=%%B
     )
     echo %value%
+```
 
 questo script sembra funzionare sia con le versioni più recenti di Windows che con le precedenti, e supporta percorsi con gli spazi.

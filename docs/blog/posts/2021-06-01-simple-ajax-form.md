@@ -56,7 +56,7 @@ e tramite il pulsante proprietà andiamo ad assegnare un nome ad ogni controllo:
 tramite codice VBA andremo a leggere i dati dalla WEB API ed a caricare il risultato
 in ogni singolo controllo.
 
-```vba
+```vb
 Sub GetPatientData(cf As String)
     Dim hReq As Object
     Dim response As String

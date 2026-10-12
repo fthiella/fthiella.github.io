@@ -11,10 +11,10 @@ source: "Commento su un blog"
 
 Ho visto di peggio (ma non sono stato io!), ad esempio il seguente
 task schedulato - semplifico un po':
-
+```bash
     cd /var/programma/temp
     rm -rf *
-
+```
 Nessun errore, tutto corretto no? Tutto funziona alla perfezione
 per diverso tempo.
 
@@ -32,8 +32,8 @@ script gira come root). Il risultato è che lo script cancella tutto
 quello che trova lì, non quello che credeva di cancellare.*
 
 *Due caratteri fanno la differenza:*
-
+```bash
     cd /var/programma/temp && rm -rf *
-
+```
 *L'operatore `&&` esegue il secondo comando solo se il primo è
 andato a buon fine. Se `cd` fallisce, `rm` non viene eseguito.*

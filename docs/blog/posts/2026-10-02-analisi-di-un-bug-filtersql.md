@@ -62,14 +62,10 @@ comportarsi in modo imprevedibile o fallire miseramente.
 update users set tenant_id = 500 where tenant_id = 400;
 ```
 Questa singola riga di codice trasferisce uno o più record dal proprio tenant a un altro.
-Ed a parte perdere i propri dati che spariscono dal controllo, un utente malevolo potrebbe sfruttare questo comportamento per spostare un account admin dal proprio tenant al tenant
-di un nemico per prenderne il controllo.
+Ed a parte perdere i propri dati che spariscono dalla propria ala protettiva, un utente malevolo potrebbe sfruttare questo comportamento per spostare un account admin dal proprio tenant al tenant di un nemico per prenderne il controllo.
 
 **La soluzione logica:** il problema sembrava risolvibile
-con banale controllo di collisione che ho implementato
-facilmente.
-
-Se una colonna appartiene allo `scope`, deve essere vietata nei campi di `insert` o `update`. 
+con banale controllo di collisione, piuttosto semplice da implementare: se una colonna appartiene allo `scope`, deve essere vietata nei campi di `insert` o `update`. 
 
 Facile come bere una bottiglia d'acqua.
 
@@ -78,7 +74,7 @@ Facile come bere una bottiglia d'acqua.
 ### Il Bug della v1.2.6
 
 Rileggi le due premesse, inserisci un minuscolo errore logico,
-ed ecco che l'ingranaggio salta.
+ed ecco che l'ingranaggio si inceppa.
 
 Se lo `scope` protegge la colonna `"tenant_id"` e un client invia in scrittura la chiave `"tenant_id "` (con uno spazio in fondo), cosa succede?
 
