@@ -2,11 +2,8 @@
 date: 2009-01-27
 categories:
   - python
-  - itunes
-  - last.fm
+title: Last.fm API e Python
 ---
-# Last.fm API e Python
-
 Il mio primo programma Python non è certamente un esempio da inserire in un manuale di stile, ma non era nemmeno quella l'intenzione; ci tenevo a scrivere qualcosa che fosse utile e che avesse risultati pratici fin da subito.  
 Con piccole variazioni al codice ho potuto individuare i brani doppi, ho potuto correggere alcuni titoli errati, ho potuto individuare gli artisti che comparivano "sdoppiati" a causa del tag artistsortorder mancante.  
 Ed ora, che cosa resta?  

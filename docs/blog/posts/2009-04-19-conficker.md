@@ -2,9 +2,8 @@
 date: 2009-04-19
 categories:
   - sicurezza
+title: Conficker
 ---
-# Conficker
-
 Mentre molte aziende sono state colpite in maniera massiccia dall'infezione del worm Conficker, nella mia realtà il problema è passato quasi del tutto inosservato: d'altra parte i requisiti di sicurezza per evitare il propagarsi di un'infezione di questo tipo sono decisamente di base, e dovrebbe far riflettere il fatto che molte aziende che trattano dati personali o sensibili non siano state adeguatamente preparate ad una tale evenienza.
   
 

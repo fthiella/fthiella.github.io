@@ -1,8 +1,9 @@
 ---
 date: 2009-06-10
+title: Paradossi della Statistica
+categories:
+  - statistica
 ---
-# Paradossi della Statistica
-
 Per confrontare la puntialità delle compagnie aeree, spesso vengono pubblicate delle statistiche che aiutano i viaggiatori a scegliere la compagnia migliore.
 La percentuale di puntualità di una compagnia aerea è definita come _numero di voli con ritardi inferiori ai 15 minuti / numero voli totali: s_ embra ragionevole!
   

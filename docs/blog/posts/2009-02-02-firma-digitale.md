@@ -1,10 +1,10 @@
 ---
-title: "Firma Digitale"
+title: Firma Digitale
 date: 2009-02-02
-categories: [sicurezza, firma-digitale]
+categories:
+  - sicurezza
 legacy: true
 ---
-
 La firma digitale è un procedimento che, a partire da un documento
 informatico e da alcune informazioni associate ad una persona, produce
 un nuovo oggetto informatico firmato che attesta la volontà della

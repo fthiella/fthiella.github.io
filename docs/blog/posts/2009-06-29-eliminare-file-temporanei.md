@@ -2,9 +2,8 @@
 date: 2009-06-29
 categories:
   - windows
+title: Eliminare File Temporanei
 ---
-# Eliminare File Temporanei
-
 Spesso applicazioni ed installer lasciano in giro per l'hard disk un sacco di spazzatura, dimenticandosi allegramente di cancellarla. Anche se è vero che i dischi sono sempre più capienti, e che un po' di file in eccesso non fanno poi così male come molti credono, ogni tanto vale la pena mettere un po' di ordine e di fare un poco di pulizia.  
   
 Posizioni dei file temporanei  

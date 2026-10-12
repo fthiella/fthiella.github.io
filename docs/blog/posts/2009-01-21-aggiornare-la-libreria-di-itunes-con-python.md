@@ -3,9 +3,8 @@ date: 2009-01-21
 categories:
   - itunes
   - python
+title: Aggiornare la libreria di iTunes con Python
 ---
-# Aggiornare la libreria di iTunes con Python
-
 Visto che la mia libreria di iTunes non ne voleva sapere di aggiornarsi correttamente, nemmeno utilizzando il buon [iTunes Library Updater](<http://itlu.ownz.ch/>), ho pensato di approfittare di questo piccolo ma fastidioso inconveniente per iniziare a conoscere - finalmente - il linguaggio di programmazione Python.  
 
   

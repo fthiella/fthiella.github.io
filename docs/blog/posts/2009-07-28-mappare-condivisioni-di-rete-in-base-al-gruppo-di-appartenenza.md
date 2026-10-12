@@ -1,8 +1,9 @@
 ---
 date: 2009-07-28
+categories:
+  - windows
+title: Mappare Condivisioni di Rete in base al Gruppo di appartenenza
 ---
-# Mappare Condivisioni di Rete in base al Gruppo di appartenenza
-
 Molte volte nello script di logon c'è la necessità di mappare condivisioni di rete in base ai gruppi cui appartiene un utente.  
 L'articolo [How Can I Map Drives Based on Membership in a Group?](<http://www.microsoft.com/technet/scriptcenter/resources/qanda/dec04/hey1210.mspx>) tratto dal sito di Microsoft spiega molto bene il problema e fornisce una valida introduzione; lo script presentato però è molto semplificato. Ho cercato di estenderlo in base alle esigenze della mia azienda.  
   

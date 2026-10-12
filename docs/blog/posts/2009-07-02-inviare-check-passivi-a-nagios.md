@@ -2,9 +2,8 @@
 date: 2009-07-02
 categories:
   - python
+title: Inviare Check Passivi a Nagios
 ---
-# Inviare Check Passivi a Nagios
-
 Nagios è un programma di monitoraggio di computer o risorse di rete che permette di inviare degli avvisi quando un nodo od un servizio non risulta attivo, oppure al ripristino del suo funzionamento.  
   
 Per il monitoraggio degli apparati è possibile utilizzare uno dei numerosi comandi predefiniti (es. ping, snmp, etc) oppure è possibile scrivere un comando personalizzato - uno script bash, perl, python o altro va benissimo, l'importante è che tale script restituisca un valore che indica se il servizio che stiamo monitorando è attivo oppure se presenta qualche problema.  

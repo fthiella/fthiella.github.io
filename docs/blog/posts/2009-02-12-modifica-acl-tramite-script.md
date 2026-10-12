@@ -2,10 +2,9 @@
 date: 2009-02-12
 categories:
   - windows
-  - xcacls
+legacy: true
+title: Modifica ACL tramite script
 ---
-# Modifica ACL tramite script
-
 Spesso mi capita di dover mantenere una struttura di cartelle di Windows che hanno delle ACL personalizzate con un livello di dettaglio molto elevato. Quando i permessi cominciano a diventare complessi lo strumento standard di Windows diventa scomodo ed è facile commettere degli errori.  
   
 L'utility [Xcacls.exe](<http://www.microsoft.com/windows2000/techinfo/reskit/tools/existing/xcacls-o.asp>), che si scarica dal sito della Microsoft, può essere di grande aiuto in tutti questi casi. Ho preparato uno script batch che richiama questa utility, leggendo da un file di testo con l'elenco delle cartelle e delle relative ACL da impostare ad ognuna di esse:  

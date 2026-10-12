@@ -1,8 +1,9 @@
 ---
 date: 2009-02-18
+title: Browsing di Active Directory tramite Recordset
+categories:
+  - windows
 ---
-# Browsing di Active Directory tramite Recordset
-
 Esistono molte utility per effettuare il browsing di Active Directory, e che permettono di esportare i risultati di una interrograzione in svariati formati, tra cui testo, CSV, Excel, etc.  
 Spesso ho bisogno di fare delle elaborazioni particolarmente approfondite sui dati estratti, ed allora mi risulta molto comodo lavorare direttamente con Microsoft Access. La lettura di Active Directory tramite l'utilizzo di un Recordset pertanto è l'ideale!  
 
