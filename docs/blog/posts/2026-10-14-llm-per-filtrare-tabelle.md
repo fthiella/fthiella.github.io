@@ -11,6 +11,7 @@ categories:
 Un LLM è in grado di convertire il linguaggio naturale in linguaggio SQL: basta semplicemente chiederglielo. E qui sta il problema.
 
 Se esponi questo meccanismo sul web, con accesso a un database reale, stai letteralmente mettendo un generatore probabilistico di testo al posto di un compilatore. A volte funziona, ma a volte sbaglia. E quando sbaglia, lo fa in modo imprevedibile, spesso silenzioso, e potenzialmente catastrofico:
+
 - si inventa nomi di colonne, per esempio scrive `users.full_name` quando hai `first_name` e `last_name`. La query esplode, oppure produce un rassicurante risultato errato;
 - sceglie l'operatore sbagliato, come `=` invece di `icontains`, `>` invece di `>=`, con risultati tecnicamente validi ma semanticamente errati;
 - ignora filtri di sicurezza, ad esempio può semplicemente dimenticarsi di aggiungere un `WHERE tenant_id = ?` che a parte impedire a un cliente di vedere i dati di tutti gli altri non fa nulla di importante;
