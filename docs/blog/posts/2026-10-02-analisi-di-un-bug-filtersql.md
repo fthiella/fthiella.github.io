@@ -15,7 +15,7 @@ Era la classica svista minuscola, la riga di codice che guardi e pensi
 di risolvere in pochi minuti.
 
 Ma quando ho messo le mani nella correzione mi sono reso conto che la patch banale risolveva
-in effetti il bug, ma non il problema che si è rivelato essere più grande.
+in effetti il bug, ma non risolveva il problema che si è rivelato essere più esteso.
 
 Il bug non era nella logica: **era architetturale**.
 
@@ -47,7 +47,7 @@ Non sostituisce davvero i permessi del database, ma offre comunque una sua utili
 
 Ma cosa succede se un client invia un payload che prova a modificare proprio la colonna riservata allo `scope`?
 
-A parte la rottura di un equilibrio estetico, nelle letture e nelle cancellazioni non si pone davvero un problema, dato che le condizioni finiscono tutte in `AND` e al massimo non esce e non si cancella nulla, ma in scrittura la faccenda si fa interessante:
+A parte la rottura di un equilibrio estetico, nelle letture e nelle cancellazioni non si pone davvero un problema, dato che le condizioni finiscono tutte in `AND` e al massimo non si crea e non si distrugge nulla, ma in scrittura la faccenda si fa interessante:
 
 #### Caso `insert`:
 ```sql
@@ -76,9 +76,9 @@ Facile come bere una bottiglia d'acqua.
 Rileggi le due premesse, inserisci un minuscolo errore logico,
 ed ecco che l'ingranaggio si inceppa.
 
-Se lo `scope` protegge la colonna `"tenant_id"` e un client invia in scrittura la chiave `"tenant_id "` (con uno spazio in fondo), cosa succede?
+Se lo `scope` protegge la colonna `"tenant_id"` e un client invia in scrittura la chiave `"tenant_id "` (con uno spazio in fondo), cosa succede? Purtroppo a causa di un bug il comportamento inaspettato era il seguente:
 
-1. purtroppo il controllo dei conflitti confrontava immediatamente le due stringhe grezze: `"tenant_id"` contro `"tenant_id "`;
+1. il controllo dei conflitti confrontava immediatamente le due stringhe grezze: `"tenant_id"` contro `"tenant_id "`;
 2. le stringhe risultavano **diverse** ed il controllo dava il via libera;
 3. solo successivamente, la funzione di quoting sanificava l'identificatore applicando il `trim()`.
 4. risultato: la query veniva compilata ed eseguita modificando proprio `tenant_id`!
@@ -95,7 +95,7 @@ Ma **due stringhe diverse possono avere lo stesso identico significato logico pe
 
 Cosa succede se il server imposta `scope: {"tenant_id": 400}` e il client invia un payload con `values: {"users.tenant_id": 500}`?
 
-Un controllo basato su stringhe non rileva alcun conflitto (`"tenant_id"` != `"users.tenant_id"`). Il sistema genera allegramente questo codice SQL:
+Un controllo basato su stringhe non rileva alcun conflitto (ovviamente `"tenant_id"` != `"users.tenant_id"`). Il sistema genera allegramente questo codice SQL:
 
 ```sql
 update users
@@ -109,19 +109,17 @@ Mentre diversi motori, quali PostgreSQL o SQLite, trovavano
 questa sintassi indigesta e la rifiutavano giustamente
 con un errore, *MySQL* la accettava con grande entusiasmo, eseguendo lo spostamento temuto.
 
-Ma non solo!
+Ed il problema non era solo questo!
 
-Cosa succede se le colonne sono case-insensitive?
+Come rilevo i conflitti se le colonne sono case-insensitive?
 Cosa succede se a livello di database è definito qualche alias?
-Cosa sarebbe successo con le decomposizioni Unicode (NFC vs NFD), dove la lettera `à` può essere rappresentata da un singolo codice o da due codici separati (a + accento)?
-
-Le stringhe in byte erano diverse, ma per il database puntavano alla stessa identica colonna.
+Cosa succede con le decomposizioni Unicode (NFC vs NFD), dove la lettera `à` può essere rappresentata da un singolo codice o da due codici separati (a + accento)? Le stringhe in byte sono diverse, ma per il database potrebbero puntare alla stessa identica colonna.
 
 Riconoscere tutte le possibili varianti semantiche che un utente o un database potevano inventarsi per identificare la stessa colonna era una corsa alle armi persa in partenza. Chi sa davvero se due nomi sono equivalenti è il motore del database; ma `filtersql` genera solo stringhe e non è, per filosofia, collegato al database.
 
 ---
 
-### La Svolta: L'Asimmetria Consapevole
+### La svolta: l'asimmetria consapevole
 
 Per uscirne vittorioso ho capito che non dovevo rendere più "intelligente" il confronto tra stringhe, ma dovevo **cambiare il contratto all'ingresso**.
 
