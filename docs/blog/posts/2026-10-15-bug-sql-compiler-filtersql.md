@@ -46,7 +46,7 @@ The solution seemed easy: implement a **collision check**.
 ---
 ## The v1.2.6 bug
 
-Unfortunately, the collision check had a little bug.
+Unfortunately, that collision check had a little bug.
 
 If the scope protects the column `"tenant_id"`, and a client sends a write payload with the key `"tenant_id "` (with a trailing space), what happens?
 
@@ -55,7 +55,7 @@ If the scope protects the column `"tenant_id"`, and a client sends a write paylo
 3. Later in the pipeline, the quoting function sanitized the identifier by applying `.strip()`.
 4. Result: the query was compiled and executed, successfully overriding the protected `tenant_id`!
 
-This is a very classic **canonicalization bug**: the validation check and the final execution engine were looking at two different representations of the same data. Fixing this specific check by moving the `.strip()` earlier would have solved the immediate bug.
+This is a very classic **canonicalization bug**: the validation check and the final execution engine were looking at two different representations of the same data. Fixing this specific check by moving the `.strip()` earlier would have solved the immediate bug. Five minutes of work.
 
 But that's when the real architectural problem emerged.
 
