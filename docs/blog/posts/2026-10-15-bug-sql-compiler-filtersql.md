@@ -91,7 +91,7 @@ While Postgres or SQLite rejected this syntax with quiet dignity, _MySQL_ accept
 
 ![Adminer executing unauthorized tenant transfer on MariaDB](/images/20261015_mariadb_query.png)
 
-### The deeper semantic problem: case, aliases, and Unicode
+### 2. The deeper semantic problem: case, aliases, and Unicode
 
 But table-qualification was only the tip of the iceberg. There was actually _much_ more to it.
 
