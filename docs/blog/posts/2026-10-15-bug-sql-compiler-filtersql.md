@@ -95,7 +95,7 @@ While Postgres or SQLite rejected this syntax with quiet dignity, _MySQL_ accept
 
 But table-qualification was only the tip of the iceberg. There was actually _much_ more to it.
 
-Consider case-insensitivity, database aliases, and Unicode normalization forms (`NFC` vs `NFD`), where the letter `à` can be represented by a single codepoint or two separate ones. The raw byte strings differ entirely, but the database treats them as the exact same column.
+Consider case-insensitivity, database aliases, and Unicode normalization forms (`NFC` vs `NFD`), where the letter `à` can be represented by a single codepoint or two separate ones. The raw byte strings differ entirely, but they may be treated as equivalent, depending on the database and its identifier rules.
 
 Trying to guess every possible semantic variation an attacker or a database could invent was a losing battle. `filtersql` only generates strings and is intentionally decoupled from a live database connection.
 
