@@ -201,7 +201,7 @@ interni ma anche agli investitori. Infine, c'era un altro gruppo che
 raccoglieva i dati applicativi per monitorare in tempo reale il corretto
 funzionamento della piattaforma.
 
-Lui era tedesco ma in questo caso ho evitato battute sul cibo.
+Lui era tedesco e, memore del Beef Pepper Rice, ho evitato battute sul cibo.
 
 Mi ha parlato del fatto che cercavano qualcuno che sviluppasse e gestisse
 le data pipelines orchestrate da DAG Airflow. Gli ho detto che di dati me
