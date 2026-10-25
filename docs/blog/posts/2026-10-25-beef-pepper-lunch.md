@@ -9,11 +9,11 @@ categories:
   - filtersql
 ---
 
-Nel 2018 Honestbee era una delle startup del Sud-Est asiatico più promettente,
+Nel 2018 Honestbee era una delle startup del Sud-Est asiatico più promettenti,
 era valutata quasi un miliardo di dollari ed era pronta a rivoluzionare la spesa
-a domicilio. Non li conoscevo, ma i miei parenti a Singapore erano loro clienti.
-Ho scoperto dopo che in quel periodo assumevano a ritmi folli, pagavano bene,
-e cercavano talenti in tutto il mondo.
+a domicilio. Non li conoscevo, ma i miei parenti a Singapore mi hanno confermato
+di aver usufruito dei loro servizi. Ho scoperto dopo che in quel periodo assumevano
+a ritmi folli, pagavano bene, e cercavano talenti in tutto il mondo.
 
 Una mattina ricevo questa mail:
 
@@ -38,7 +38,7 @@ quale fosse il mio piatto preferito di Singapore. Avrei potuto dire "Chili Crab"
 o "Hainanese Chicken Rice", ma ho risposto "Beef Pepper Rice"
 di Pepper Lunch. Lei è scoppiata a ridere, dato che Pepper Lunch è una catena
 giapponese e non è un piatto tipico di Singapore, ma in effetti è il cibo
-che si mangia davvero quando ci si vive.
+che si mangia davvero quando lì ci si vive.
 
 Comunque il primo screening lo avevo passato e dopo qualche giorno mi
 ha inviato un take-home test.
@@ -51,9 +51,10 @@ di indovinare la risposta che l'intervistatore si aspetta, stai dimostrando
 come lavori davvero, con i tuoi tempi, i tuoi strumenti e il tuo modo
 di documentare.
 
-Il famoso Joel Spolsky, uno dei fondatori della piattaforma
-Stackoverflow, nel suo celebre "Joel Test", lo mette nero su bianco con
-la domanda numero 11 "Do new candidates write code during their interview?".
+Il famoso Joel Spolsky, tra l'altro proprio uno dei fondatori della
+piattaforma Stack Overflow, nel suo celebre "Joel Test", lo mette nero
+su bianco con la domanda numero 11 "Do new candidates write code during
+their interview?".
 
 Se un'azienda ti assume senza farti scrivere codice, ti sta assumendo
 sulla fiducia. Se ti fa un take-home test, invece, vuole vedere il tuo
@@ -82,10 +83,11 @@ le API pubbliche di Dota2, per risolvere tre richieste specifiche:
 - confrontare due giocatori;
 - suggerire un eroe a un giocatore in base ai suoi dati storici.
 
-E poi c'era la frase che mi ha fatto capire, ed apprezzare, che tipo di azienda fosse:
+Tra le note c'era questo, che ho molto apprezzato:
 "We are looking for elements of good style and creativity, so go for elegant code
-as well as originality." Cercavano codice elegante. Non solo funzionante,
-non solo veloce: creativo, con un buon stile, pulito, originale ed elegante.
+as well as originality." Cercavano codice non solo funzionante,
+non solo veloce: creativo, con un buon stile, pulito, originale. Cercavano
+codice elegante.
 
 Peccato che non avessi quasi mai scritto codice Python, e che non avessi la
 minima idea di che cosa fosse Dota2.
@@ -95,8 +97,8 @@ minima idea di che cosa fosse Dota2.
 Dota2, a quanto pare, era un famoso videogioco competitivo online in cui
 due squadre di cinque giocatori si sfidano controllando dei personaggi
 chiamati "eroi". Era un fenomeno di massa, con tornei da milioni di dollari.
-Io non ne avevo la minima idea, e non ero intenzionato a diventare un giocatore,
-ma le statistiche delle partite erano interrogabili via web APIs.
+Io non ne avevo la minima idea, e non ero intenzionato ad avercela,
+ma fortunatamente le statistiche delle partite erano interrogabili via API web.
 
 Non mi interessava capire le strategie di gioco, dovevo solo capire
 la struttura dei dati: cosa fosse un "match", come si calcolava una vittoria,
@@ -105,7 +107,7 @@ la documentazione delle API di OpenDota durante la notte.
 
 E per quanto riguarda Python, avrei potuto arrendermi, invece mi sono
 rimboccato le maniche e ho cercato di capire la logica, partendo da ciò
-che sapevo già (il Perl).
+che sapevo già - principalmente SQL e Perl.
 
 Avevo sette giorni di tempo. Non c'erano vincoli specifici, ma dopo aver
 ricercato e provato diverse librerie ho scelto la strada della semplicità:
@@ -113,13 +115,18 @@ Flask come framework Python minimalista, e PythonAnywhere per pubblicare
 l'applicazione in pochi minuti, senza dover configurare server complessi.
 
 Volevo che chi leggeva il codice capisse subito cosa faceva. Ho diviso
-il codice in due file: flask_dota2_app.py per gestire le richieste web,
-e dota2utils.py per la logica di business.
+il codice in due file: `flask_dota2_app.py` per gestire le richieste web,
+e `dota2utils.py` per la logica di business.
+
+Mentre su Python improvvisavo, ho fatto leva su ciò che padroneggiavo da anni: SQL.
+Per suggerire l'eroe ho scritto una query con un paio di CTE per calcolare
+la media delle partite giocate dal profilo ed estrarre solo i personaggi usati
+meno della media: l'idea non era proporre l'eroe preferito né uno sconosciuto,
+ma consigliare un eroe già provato su cui fare pratica.
 
 Naturalmente ho dovuto prendere delle scorciatoie, che però ho cercato
-di documentare. Per esempio, per suggerire l'eroe, dovevo passare l'ID
-del giocatore a una query SQL eseguita tramite l'API Explorer di OpenDota.
-Nel codice ho scritto:
+di documentare. Per passare l'ID del giocatore a quella query SQL eseguita
+tramite l'API Explorer di OpenDota, nel codice ho scritto:
 
 ```python
 # substitute the sql placeholder with the account_id - not usually the
@@ -129,8 +136,8 @@ query = queries['recommendations'].format(account_id)
 
 Avevo ragione e non era il modo più sicuro per eseguire una query,
 ma a 24 ore dalla scadenza, con sette giorni per imparare Flask e
-l'API di Dota2, .format() andava benissimo. Ho pensato però che il
-commento fosse ben visto: faccio cose sbagliate, lo so, ma per lo
+l'API di Dota2, `.format()` andava benissimo. Ho pensato però che il
+commento fosse apprezzato: faccio cose sbagliate, lo so, ma per lo
 meno so di farle.
 
 (Anni dopo, quasi a voler chiudere quel cerchio, ho scritto una libreria Python,
@@ -138,9 +145,13 @@ meno so di farle.
 query dinamiche e risolvere quel problema).
 
 Per consegnare il test, oltre al codice Python ed SQL, ho preparato
-un report PDF ben impaginato usando StackEdit, uno strumento che mi
-permetteva di scrivere in Markdown e impaginare il documento con un
-aspetto pulito e professionale.
+un report PDF ben impaginato usando StackEdit e Markdown. Nel documento ho spiegato
+le mie scelte senza nascondere nulla: ho chiarito perché avevo ignorato
+la ricerca per username (su Steam i nomi utente non sono univoci e avrebbero
+introdotto ambiguità nei dati), ho ammesso candidamente che l'endpoint
+di comparazione tra due giocatori era il meno elegante del progetto, e ho fatto
+presente che i test sui filtri temporali li avevo fatti a mezzanotte senza poter
+verificare il reale fuso orario dei server di OpenDota.
 
 ## Il direttore chiuso in magazzino
 
@@ -172,8 +183,8 @@ confermata, ma che verificava subito e mi faceva sapere.
 Dopo 15 minuti mi scrive dicendomi di aver trovato il direttore. Era letteralmente
 chiuso dentro al magazzino e non riusciva ad uscire. L'intervista doveva essere rimandata.
 
-In pieno stile startup iper-caotica, l'Head of Data Science era rimasto intrappolato
-nel magazzino fisico perché dovevano lanciare un nuovo "grande progetto".
+In pieno stile startup iper-caotica, l'Head of Data Science/Data Engineering era rimasto
+intrappolato nel magazzino fisico perché dovevano lanciare un nuovo "grande progetto".
 
 (si trattava di un colossale supermercato/magazzino automatizzato e senza casse
 di 6.000 metri quadri, inaugurato l'ottobre successivo)
@@ -190,7 +201,7 @@ interni ma anche agli investitori. Infine, c'era un altro gruppo che
 raccoglieva i dati applicativi per monitorare in tempo reale il corretto
 funzionamento della piattaforma.
 
-Lui era tedesco ma ho evitato battute su crauti, Kartoffeln o stinco di maiale.
+Lui era tedesco ma in questo caso ho evitato battute sul cibo.
 
 Mi ha parlato del fatto che cercavano qualcuno che sviluppasse e gestisse
 le data pipelines orchestrate da DAG Airflow. Gli ho detto che di dati me
@@ -210,9 +221,9 @@ e l'Head of Data Science/Data Engineering letteralmente intrappolato in una stan
 
 ## L'esito
 
-Qualche giorno dopo, mi è arrivata la mail con l'esito. La call era andata bene,
-ma hanno ritenuto di non procedere a causa di un "misfit in terms of
-technology expectation".
+Qualche giorno dopo, mi è arrivata la mail con l'esito. La call era andata tutto
+sommato bene, ma hanno ritenuto di non procedere a causa di un "misfit in terms of
+technology expectation", cosa che in effetti si sapeva fin da subito.
 
 Col senno di poi, è stata una grande fortuna. Tra il 2019 e 2020 l'azienda
 è crollata, licenziamenti di massa, CEO dimissionario, bancarotta e
@@ -220,7 +231,8 @@ mille scandali.
 
 Ma anche senza il senno di poi, credo sia stata una bella esperienza perché
 comunque, per una settimana, ho parlato con il capo di una delle aziende
-più promettenti del Sud-Est asiatico. Mi hanno fatto scrivere codice,
-hanno letto ed analizzato il mio report, hanno speso tempo per capire
-come ragionavo. Non mi hanno scelto, pazienza, ma il fatto stesso di essere
-arrivato fin lì, partendo da Stack Overflow, è stata una bella soddisfazione.
+più moderne, tecnologicamente all'avanguardia e promettenti del Sud-Est asiatico.
+Mi hanno fatto scrivere codice, hanno letto ed analizzato il mio report,
+hanno speso tempo per capire come ragionavo. Non mi hanno scelto, pazienza,
+ma il fatto stesso di essere arrivato fin lì, partendo da Stack Overflow,
+è stata una bella soddisfazione.
